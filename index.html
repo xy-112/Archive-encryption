@@ -133,6 +133,8 @@
             margin-bottom: 25px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            max-width: 100%;
+            box-sizing: border-box;
         }
         
         .card:hover {
@@ -565,6 +567,8 @@
             justify-items: center;
             margin-top: 20px;
             padding: 0 10px;
+            max-width: 100%;
+            box-sizing: border-box;
         }
         
         .challenge-card {
@@ -574,8 +578,9 @@
             border: 2px solid rgba(52, 152, 219, 0.2);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 400px;
+            max-width: 100%;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
         
         .challenge-card:hover {
@@ -879,7 +884,10 @@
             /* 挑战区域响应式优化 */
             .challenge-card {
                 padding: 20px;
-                margin: 0 5px;
+                margin: 0 auto;
+                width: calc(100% - 20px);
+                max-width: 100%;
+                box-sizing: border-box;
             }
             
             .challenge-title {
@@ -1339,85 +1347,85 @@
                         </div>
                         <div class="accordion-content">
                             <!-- 政府机关电子档案加密 -->
-                            <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #3498db; box-sizing: border-box; width: 100%;">
-                                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-building"></i> 政府机关电子档案加密</h3>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">背景：</span>
+                            <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #3498db;">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-building"></i> 政府机关电子档案加密</h3>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">背景：</span>
                                     <span>某市政府机关需要管理大量机密电子文件，包括会议纪要、政策文件、人事档案等敏感信息。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">解决方案：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">解决方案：</span>
                                     <span>采用AES-256加密算法对所有电子档案进行存储加密，结合基于角色的访问控制（RBAC）机制，实现了"加密存储+权限控制"的双重保护。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">实现效果：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">实现效果：</span>
                                     <span>即使存储服务器遭受物理盗窃或网络攻击，加密后的机密信息也无法被非法读取，确保了政府信息的安全性。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">合规依据：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">合规依据：</span>
                                     <span>符合《电子文件管理暂行办法》、《政府信息公开条例》等法规的安全要求，保障了政府信息的完整性和机密性。</span>
                                 </div>
                             </div>
                             
                             <!-- 医院医疗档案加密 -->
-                            <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #27ae60; box-sizing: border-box; width: 100%;">
-                                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-hospital"></i> 医院医疗档案加密</h3>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">背景：</span>
+                            <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #27ae60;">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-hospital"></i> 医院医疗档案加密</h3>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">背景：</span>
                                     <span>某三甲医院需要保护患者的电子病历、医疗影像资料、基因检测结果等敏感医疗信息，防止患者隐私泄露。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">解决方案：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">解决方案：</span>
                                     <span>使用AES-256加密算法对患者敏感信息进行存储加密，采用区块链技术实现医疗档案的不可篡改，结合权限管理系统控制不同医护人员的访问权限。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">实现效果：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">实现效果：</span>
                                     <span>有效防止了患者隐私泄露，确保了医疗档案的真实性和完整性，提升了患者对医院的信任度。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">合规依据：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">合规依据：</span>
                                     <span>符合《中华人民共和国网络安全法》、《医疗机构病历管理规定》、《医疗质量管理办法》等法规要求。</span>
                                 </div>
                             </div>
                             
                             <!-- 高校学生档案加密 -->
-                            <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #f39c12; box-sizing: border-box; width: 100%;">
-                                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-university"></i> 高校学生档案加密</h3>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">背景：</span>
+                            <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #f39c12;">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-university"></i> 高校学生档案加密</h3>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">背景：</span>
                                     <span>某综合性大学需要管理数万学生的电子档案，包括成绩单、奖惩记录、学籍信息、家庭背景等敏感数据。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">解决方案：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">解决方案：</span>
                                     <span>采用AES-256加密技术对学生档案数据库进行加密存储，定期进行加密备份，结合身份认证系统实现了"加密存储+定期备份+身份认证"的多层次保护。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">实现效果：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">实现效果：</span>
                                     <span>有效保护了学生隐私，防止了档案数据泄露，确保了学生档案的真实性和安全性。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">合规依据：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">合规依据：</span>
                                     <span>符合《中华人民共和国教育法》、《高等学校档案管理办法》、《个人信息保护法》等法规要求。</span>
                                 </div>
                             </div>
                             
                             <!-- 企业财务档案加密 -->
-                            <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #9b59b6; box-sizing: border-box; width: 100%;">
-                                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-industry"></i> 企业财务档案加密</h3>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">背景：</span>
+                            <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #9b59b6;">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-industry"></i> 企业财务档案加密</h3>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">背景：</span>
                                     <span>某上市公司需要保护财务报表、审计报告、税务资料、投资计划等敏感财务文件，防止商业机密泄露。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">解决方案：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">解决方案：</span>
                                     <span>使用AES-256加密算法存储财务档案，采用数字签名技术验证文件完整性，结合文件访问日志审计系统，实现了"加密存储+完整性验证+访问审计"的全面保护。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; margin-bottom: 15px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">实现效果：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">实现效果：</span>
                                     <span>有效防止了财务数据泄露和篡改，确保了企业财务信息的安全性和完整性，符合上市公司的合规要求。</span>
                                 </div>
-                                <div style="display: grid; grid-template-columns: minmax(80px, auto) 1fr; gap: 10px; grid-auto-flow: row; align-items: start;">
-                                    <span style="font-weight: bold; color: #34495e; white-space: nowrap;">合规依据：</span>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">合规依据：</span>
                                     <span>符合《中华人民共和国会计法》、《企业会计信息化工作规范》、《上市公司信息披露管理办法》等法规要求。</span>
                                 </div>
                             </div>
