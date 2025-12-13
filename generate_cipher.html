@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成AES密文</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <h1>生成AES密文</h1>
+    <div id="result"></div>
+    
+    <script>
+        // 生成真实的AES密文
+        const text = '项目预算2023-2024';
+        const key = 'EmergencyTransfer';
+        const encrypted = CryptoJS.AES.encrypt(text, key).toString();
+        
+        // 显示密文
+        document.getElementById('result').innerHTML = `
+            <h2>生成结果：</h2>
+            <p><strong>明文：</strong>${text}</p>
+            <p><strong>密钥：</strong>${key}</p>
+            <p><strong>密文：</strong><code>${encrypted}</code></p>
+        `;
+        
+        console.log('密文:', encrypted);
+    </script>
+</body>
+</html>

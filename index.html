@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>档案加密技术体验馆 | 对称加密互动教学</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #f39c12;
+            --light-color: #f5f0e6;
+            --dark-color: #1a2530;
+            --success-color: #27ae60;
+            --warning-color: #e74c3c;
+            --ancient-color: #d35400;
+            --modern-color: #27ae60;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f0e6 0%, #e8e2d6 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9f6f0"/><path d="M0 0L100 100M100 0L0 100" stroke="%23e0d8c8" stroke-width="0.5"/></svg>');
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            border-bottom: 4px solid var(--accent-color);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .time-period {
+            display: inline-block;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 5px;
+            color: var(--secondary-color);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        /* 标签页导航 */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* 移除固定导航栏的页面顶部间距 */
+        .container {
+            margin-top: 0;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            margin: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+        }
+        
+        .tab-btn.active {
+            background: var(--secondary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid rgba(243, 156, 18, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+        }
+        
+        .section-title i {
+            color: var(--accent-color);
+        }
+        
+        /* 知识点卡片 */
+        .knowledge-card {
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid #2196f3;
+        }
+        
+        .knowledge-card h2 {
+            margin-top: 0;
+            color: #0d47a1;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+        
+        .knowledge-card p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d35400;
+            font-weight: bold;
+        }
+        
+        /* 对比表格 */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comparison-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .ancient {
+            color: var(--ancient-color);
+            font-weight: bold;
+        }
+        
+        .modern {
+            color: var(--modern-color);
+            font-weight: bold;
+        }
+        
+        /* 输入输出区域 */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            background: white;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            padding: 14px 24px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-accent {
+            background: var(--accent-color);
+        }
+        
+        .btn-accent:hover {
+            background: #e67e22;
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background: #219653;
+        }
+        
+        /* 输出区域 */
+        .output-box {
+            background: #f8f9fa;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            margin-top: 10px;
+            min-height: 80px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            transition: all 0.3s;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+            padding: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        input, select, textarea {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            background: white;
+        }
+        
+        .output-box.encrypted {
+            border-color: var(--modern-color);
+            background: rgba(39, 174, 96, 0.05);
+        }
+        
+        .output-box.decrypted {
+            border-color: var(--secondary-color);
+            background: rgba(52, 152, 219, 0.05);
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: #e8f4fc;
+            padding: 16px;
+            border-left: 5px solid var(--secondary-color);
+            margin-top: 25px;
+            font-size: 1rem;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.6;
+        }
+        
+        /* 折叠面板样式 */
+        .accordion {
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .accordion-item {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .accordion-header:hover {
+            background: #34495e;
+        }
+        
+        .accordion-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .accordion-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .accordion-content.active {
+            padding: 20px;
+            max-height: 2000px;
+        }
+        
+        .accordion-content p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .accordion-content ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .accordion-content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .tip-box strong {
+            color: var(--secondary-color);
+        }
+        
+        /* 密码转盘 */
+        .visualization {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 220px;
+            background: white;
+            border-radius: 12px;
+            margin: 25px 0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #eee;
+        }
+        
+        .cipher-wheel {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            transition: transform 1.5s ease;
+        }
+        
+        .wheel-outer, .wheel-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .wheel-outer {
+            border: 3px solid var(--ancient-color);
+            background: rgba(211, 84, 0, 0.05);
+        }
+        
+        .wheel-inner {
+            width: 70%;
+            height: 70%;
+            border: 3px solid var(--accent-color);
+            background: rgba(243, 156, 18, 0.05);
+            transform: rotate(0deg);
+        }
+        
+        .wheel-letter {
+            position: absolute;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        
+        /* AES加密流程可视化 - 改进响应式布局 */
+        .encryption-process {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 25px 0;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .process-steps-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 900px;
+            gap: 0;
+        }
+        
+        .process-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .process-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 100px;
+            margin: 0 5px;
+        }
+        
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step-text {
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+        
+        .process-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+        
+        /* 挑战区域 */
+        .challenge-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            justify-items: center;
+            margin-top: 20px;
+        }
+        
+        .challenge-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(52, 152, 219, 0.2);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            border-color: rgba(52, 152, 219, 0.4);
+        }
+        
+        .challenge-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(243, 156, 18, 0.2);
+        }
+        
+        .challenge-card p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .hint {
+            font-style: italic;
+            color: #666;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #ccc;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .challenge-card input[type="text"],
+        .challenge-card select {
+            width: 100%;
+            padding: 14px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .challenge-card input[type="text"]:focus,
+        .challenge-card select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            background: white;
+        }
+        
+        .challenge-card button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+        
+        #challenge1Result,
+        #challenge2Result,
+        #challenge3Result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #challenge1Result.correct,
+        #challenge2Result.correct,
+        #challenge3Result.correct {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+        
+        #challenge1Result.incorrect,
+        #challenge2Result.incorrect,
+        #challenge3Result.incorrect {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: #95a5a6;
+            font-size: 0.95rem;
+        }
+        
+        /* 通知样式 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        /* 返回导航栏按钮样式 */
+        .back-to-nav {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0 20px;
+        }
+        
+        .back-to-nav-btn {
+            padding: 12px 24px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-to-nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .notification.success {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .notification.error {
+            background: var(--warning-color);
+            color: white;
+        }
+        
+        .notification.info {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        /* 改进的AES交互界面 */
+        .aes-interactive {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .encryption-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 2px solid #e3f2fd;
+            margin-bottom: 20px;
+        }
+        
+        .encryption-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(243, 156, 18, 0.2);
+        }
+        
+        .encryption-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .encryption-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .input-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .copy-btn {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .copy-btn.copied {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .action-buttons .btn {
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-buttons .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes highlight {
+            0% { background-color: inherit; }
+            50% { background-color: rgba(243, 156, 18, 0.2); }
+            100% { background-color: inherit; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .highlight {
+            animation: highlight 1s ease;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .tabs { flex-direction: column; }
+            .tab-btn { width: 100%; }
+            .challenge-container { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.5rem; }
+            
+            /* 改进AES流程响应式 */
+            .encryption-process {
+                padding: 15px 10px;
+                overflow-x: auto;
+            }
+            
+            .process-steps-container {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .process-row {
+                min-width: auto;
+                width: 100%;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .process-step {
+                min-width: 85px;
+                margin: 10px 5px;
+            }
+            
+            .step-text {
+                font-size: 0.8rem;
+            }
+            
+            .process-arrow {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .process-steps-container {
+                min-width: auto;
+            }
+            
+            .process-row {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            .process-step {
+                min-width: 80px;
+                margin: 10px 5px;
+            }
+            
+            .step-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .step-text {
+                font-size: 0.75rem;
+            }
+            
+            .process-arrow {
+                font-size: 1rem;
+                margin: 0 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-lock"></i> 档案加密技术体验馆</h1>
+            <p class="subtitle">从古代密码到现代加密：探索加密技术的古今智慧</p>
+            <div>
+                <span class="time-period"><i class="fas fa-scroll"></i> 古代加密</span>
+                <span class="time-period"><i class="fas fa-laptop-code"></i> 现代加密</span>
+                <span class="time-period"><i class="fas fa-graduation-cap"></i> 教学互动</span>
+            </div>
+        </header>
+        
+        <!-- 标签页导航 -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="caesar">
+                <i class="fas fa-exchange-alt"></i> 凯撒密码
+            </button>
+            <button class="tab-btn" data-tab="introduction">
+                <i class="fas fa-info-circle"></i> 对称加密
+            </button>
+            <button class="tab-btn" data-tab="aes">
+                <i class="fas fa-shield-alt"></i> AES加密
+            </button>
+            <button class="tab-btn" data-tab="asymmetric">
+                <i class="fas fa-key"></i> 非对称加密
+            </button>
+            <button class="tab-btn" data-tab="challenge">
+                <i class="fas fa-trophy"></i> 加密挑战
+            </button>
+        </div>
+        
+        <!-- 凯撒密码部分 -->
+        <div id="caesar" class="tab-content active">
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-history"></i> 凯撒密码 - 古代加密技术</h2>
+                <p>凯撒密码是古罗马凯撒大帝用来保护重要军情的加密方法。它通过将字母按照固定数目进行偏移来加密信息。</p>
+                
+                <div class="visualization">
+                    <div class="cipher-wheel" id="cipherWheel">
+                        <!-- 通过JS动态生成 -->
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="caesarText"><i class="fas fa-edit"></i> 输入要加密的文本：</label>
+                    <textarea id="caesarText" placeholder="请输入要加密的档案内容...">Archive</textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="caesarShift"><i class="fas fa-sliders-h"></i> 选择偏移量：</label>
+                    <input type="range" id="caesarShift" min="1" max="25" value="3">
+                    <span id="shiftValue" style="font-weight:bold; color:var(--ancient-color); margin-left:10px;">3</span>
+                </div>
+                
+                <button class="btn" onclick="encryptCaesar()">
+                    <i class="fas fa-lock"></i> 加密文本
+                </button>
+                
+                <div class="output-box" id="caesarResult">
+                    等待加密...
+                </div>
+                
+                <div class="tip-box">
+                    <strong>档案学应用：</strong>在古代档案馆中，类似凯撒密码的方法被用于保护重要文献的目录索引，
+                    只有掌握偏移规则的管理员才能找到特定文献的位置。
+                </div>
+            </div>
+            
+            <div class="tip-box" style="background: rgba(231, 76, 60, 0.05); border-left-color: var(--warning-color);">
+                ⚠️ <strong>注意：</strong>实际应用中应在服务器端加密，前端加密仅用于演示
+            </div>
+            
+            <!-- 返回导航栏按钮 -->
+            <div class="back-to-nav">
+                <button class="back-to-nav-btn" onclick="scrollToNavigation()">
+                    <i class="fas fa-arrow-up"></i> 浏览其他内容
+                </button>
+            </div>
+        </div>
+        
+        <!-- 对称加密简介 -->
+        <div id="introduction" class="tab-content">
+            <div class="knowledge-card">
+                <h2><i class="fas fa-book"></i> 什么是对称加密？</h2>
+                <p>
+                    <strong>对称加密</strong>是指<strong>加密和解密使用同一把密钥</strong>的加密方式。
+                    它速度快、效率高，广泛应用于电子文件保护（如PDF密码、压缩包加密、数据库字段加密等）。
+                </p>
+                <p>
+                    常见算法包括：<code>DES</code>（已淘汰）、<code>3DES</code>、<code>AES</code>（当前国际标准）。
+                    其中 <code>AES-256</code> 被美国政府用于保护机密信息，也是电子档案管理推荐算法。
+                </p>
+            </div>
+            
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-balance-scale"></i> 古代 vs 现代：凯撒密码 vs AES</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>对比维度</th>
+                        <th><span class="ancient">凯撒密码（古代）</span></th>
+                        <th><span class="modern">AES（现代）</span></th>
+                    </tr>
+                    <tr>
+                        <td>加密原理</td>
+                        <td>字母固定位移（如A→D）</td>
+                        <td>多轮混淆+扩散（基于数学难题）</td>
+                    </tr>
+                    <tr>
+                        <td>密钥空间</td>
+                        <td>仅25种可能（英文字母）</td>
+                        <td>2<sup>256</sup> ≈ 1.1×10<sup>77</sup>（宇宙原子数≈10<sup>80</sup>）</td>
+                    </tr>
+                    <tr>
+                        <td>破解难度</td>
+                        <td>手工穷举几分钟</td>
+                        <td>现有计算机需宇宙年龄时间</td>
+                    </tr>
+                    <tr>
+                        <td>应用场景</td>
+                        <td>军事密信、个人秘密</td>
+                        <td>电子档案、金融交易、云存储</td>
+                    </tr>
+                    <tr>
+                        <td>档案管理意义</td>
+                        <td>依赖"保密性"（藏起来）</td>
+                        <td>依赖"计算安全性"（算不动）</td>
+                    </tr>
+                </table>
+                
+                <!-- 对称加密的优点与局限 -->
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3><i class="fas fa-balance-scale"></i> 对称加密的优点与局限</h3>
+                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="accordion-content">
+                            <h4 style="color: var(--primary-color); margin-top: 0; margin-bottom: 15px;"><i class="fas fa-thumbs-up"></i> 优点</h4>
+                            <ul>
+                                <li><strong>加密速度快</strong>：对称加密算法运算简单，处理大数据量时效率远高于非对称加密</li>
+                                <li><strong>效率高</strong>：占用系统资源少，适合在各种设备上运行</li>
+                                <li><strong>算法成熟</strong>：经过长期实践验证，安全性得到广泛认可</li>
+                                <li><strong>密钥长度相对较短</strong>：相同安全性下，对称加密密钥长度通常比非对称加密短得多</li>
+                                <li><strong>适合大数据量加密</strong>：广泛应用于文件加密、数据库加密等场景</li>
+                            </ul>
+                            
+                            <h4 style="color: var(--primary-color); margin-top: 20px; margin-bottom: 15px;"><i class="fas fa-thumbs-down"></i> 局限</h4>
+                            <ul>
+                                <li><strong>密钥分发问题</strong>：需要安全渠道传递密钥，否则容易被窃取</li>
+                                <li><strong>密钥管理困难</strong>：每对通信方需要独立密钥，多用户环境下密钥数量呈几何级增长</li>
+                                <li><strong>缺乏不可否认性</strong>：无法证明消息来源，容易发生抵赖</li>
+                                <li><strong>不适合多用户环境</strong>：密钥数量过多，管理复杂度高</li>
+                                <li><strong>密钥泄露风险</strong>：一旦密钥泄露，所有加密数据都将面临风险</li>
+                            </ul>
+                            
+                            <p style="margin-top: 20px; line-height: 1.7;">
+                                对称加密的这些特点决定了它在档案管理中的应用场景：适合本地存储加密和固定通信方之间的保密通信，
+                                但在开放网络环境下需要结合其他技术（如非对称加密）来解决密钥分发问题。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    💡 <strong>启示：</strong>现代电子文件必须依靠强加密算法保障长期可读与安全！
+                    档案学专业的学生需要理解加密技术如何保护电子文件的真实性、完整性和机密性。
+                </div>
+            </div>
+            
+            <!-- 返回导航栏按钮 -->
+            <div class="back-to-nav">
+                <button class="back-to-nav-btn" onclick="scrollToNavigation()">
+                    <i class="fas fa-arrow-up"></i> 浏览其他内容
+                </button>
+            </div>
+        </div>
+        
+        <!-- AES加密部分（改进版） -->
+        <div id="aes" class="tab-content">
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-shield-alt"></i> AES加密 - 现代电子文件保护</h2>
+                <p>高级加密标准（AES）是目前最常用的对称加密算法，被广泛应用于政府、金融和档案管理系统。</p>
+                
+                <!-- AES加密流程可视化 -->
+                <div class="encryption-process">
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px;">AES加密流程可视化</h3>
+                    <div class="process-steps-container">
+                        <div class="process-row">
+                            <div class="process-step">
+                                <div class="step-icon"><i class="fas fa-key"></i></div>
+                                <div class="step-text">密钥扩展</div>
+                            </div>
+                            <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                            <div class="process-step">
+                                <div class="step-icon"><i class="fas fa-random"></i></div>
+                                <div class="step-text">字节代换</div>
+                            </div>
+                            <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                            <div class="process-step">
+                                <div class="step-icon"><i class="fas fa-exchange-alt"></i></div>
+                                <div class="step-text">行移位</div>
+                            </div>
+                            <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                            <div class="process-step">
+                                <div class="step-icon"><i class="fas fa-layer-group"></i></div>
+                                <div class="step-text">列混淆</div>
+                            </div>
+                        </div>
+                        <div class="process-row">
+                            <div class="process-step">
+                                <div class="step-icon"><i class="fas fa-plus-circle"></i></div>
+                                <div class="step-text">轮密钥加</div>
+                            </div>
+                            <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                            <div class="process-step">
+                                <div class="step-icon"><i class="fas fa-redo"></i></div>
+                                <div class="step-text">重复10-14轮</div>
+                            </div>
+                            <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                            <div class="process-step">
+                                <div class="step-icon"><i class="fas fa-lock"></i></div>
+                                <div class="step-text">加密完成</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 改进的AES交互界面 -->
+                <div class="aes-interactive">
+                    <!-- 加密部分 -->
+                    <div class="encryption-box">
+                        <div class="encryption-header">
+                            <i class="fas fa-lock" style="color: var(--modern-color);"></i>
+                            <h3>加密档案</h3>
+                        </div>
+                        <div class="encryption-content">
+                            <div class="input-group">
+                                <label for="plaintext"><i class="fas fa-edit"></i> 明文（要加密的档案内容）</label>
+                                <textarea id="plaintext" placeholder="请输入要加密的档案内容...">对称加密在电子文件管理中确保数据的机密性和完整性</textarea>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="aesKey"><i class="fas fa-key"></i> 加密密钥</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" id="aesKey" value="Archives" placeholder="请输入加密密钥" style="flex: 1;">
+                                    <button class="btn btn-accent" onclick="generateRandomKey()" style="padding: 10px 15px;">
+                                        <i class="fas fa-random"></i> 随机
+                                    </button>
+                                </div>
+                                <small style="color:#7f8c8d; margin-top:5px; display:block;">建议使用4-16位字母或数字组合</small>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn" onclick="aesEncrypt()">
+                                    <i class="fas fa-lock"></i> 执行AES加密
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 加密结果 -->
+                    <div class="encryption-box" id="encryptionResultBox" style="display: none;">
+                        <div class="encryption-header">
+                            <i class="fas fa-shield-alt" style="color: var(--success-color);"></i>
+                            <h3>加密结果</h3>
+                        </div>
+                        <div class="encryption-content">
+                            <div class="input-group">
+                                <label><i class="fas fa-file-contract"></i> 加密后的档案（密文）</label>
+                                <div class="output-box encrypted" id="encryptedResult">
+                                    等待加密结果...
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('encryptedResult', this)">
+                                    <i class="far fa-copy"></i> 复制密文
+                                </button>
+                            </div>
+                            
+                            <div class="tip-box">
+                                <i class="fas fa-info-circle"></i> 
+                                <strong>成功加密！</strong> 现在你可以将密文复制给接收方，对方使用相同的密钥即可解密。
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 解密部分 -->
+                    <div class="encryption-box">
+                        <div class="encryption-header">
+                            <i class="fas fa-unlock" style="color: var(--secondary-color);"></i>
+                            <h3>解密档案</h3>
+                        </div>
+                        <div class="encryption-content">
+                            <div class="input-group">
+                                <label for="ciphertext"><i class="fas fa-file-contract"></i> 密文（要解密的档案内容）</label>
+                                <textarea id="ciphertext" placeholder="请粘贴要解密的密文..."></textarea>
+                                <button class="copy-btn" onclick="useEncryptedResult()" style="margin-top: 5px;">
+                                    <i class="fas fa-paste"></i> 使用上方加密结果
+                                </button>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="decryptKey"><i class="fas fa-key"></i> 解密密钥</label>
+                                <input type="text" id="decryptKey" placeholder="请输入解密密钥">
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn btn-success" onclick="aesDecrypt()">
+                                    <i class="fas fa-unlock"></i> 执行AES解密
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 解密结果 -->
+                    <div class="encryption-box" id="decryptionResultBox" style="display: none;">
+                        <div class="encryption-header">
+                            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                            <h3>解密结果</h3>
+                        </div>
+                        <div class="encryption-content">
+                            <div class="input-group">
+                                <label><i class="fas fa-file-alt"></i> 解密后的档案（明文）</label>
+                                <div class="output-box decrypted" id="decryptedResult">
+                                    等待解密结果...
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('decryptedResult', this)">
+                                    <i class="far fa-copy"></i> 复制明文
+                                </button>
+                            </div>
+                            
+                            <div class="tip-box">
+                                <i class="fas fa-shield-check"></i> 
+                                <strong>解密验证成功！</strong> 这表明AES对称加密在档案传输中能够确保数据的机密性和完整性。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>档案学应用：</strong>在电子文件管理系统中，AES加密用于保护存储的电子档案，
+                    确保即使数据被盗也无法被读取。结合数字签名技术，还可以验证档案的完整性和来源真实性。
+                </div>
+                
+                <!-- 档案管理案例展示 -->
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3><i class="fas fa-file-archive"></i> 档案管理中的加密技术应用案例</h3>
+                            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="accordion-content">
+                            <!-- 政府机关电子档案加密 -->
+                            <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #3498db;">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-building"></i> 政府机关电子档案加密</h3>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">背景：</span>
+                                    <span>某市政府机关需要管理大量机密电子文件，包括会议纪要、政策文件、人事档案等敏感信息。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">解决方案：</span>
+                                    <span>采用AES-256加密算法对所有电子档案进行存储加密，结合基于角色的访问控制（RBAC）机制，实现了"加密存储+权限控制"的双重保护。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">实现效果：</span>
+                                    <span>即使存储服务器遭受物理盗窃或网络攻击，加密后的机密信息也无法被非法读取，确保了政府信息的安全性。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">合规依据：</span>
+                                    <span>符合《电子文件管理暂行办法》、《政府信息公开条例》等法规的安全要求，保障了政府信息的完整性和机密性。</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 医院医疗档案加密 -->
+                            <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #27ae60;">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-hospital"></i> 医院医疗档案加密</h3>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">背景：</span>
+                                    <span>某三甲医院需要保护患者的电子病历、医疗影像资料、基因检测结果等敏感医疗信息，防止患者隐私泄露。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">解决方案：</span>
+                                    <span>使用AES-256加密算法对患者敏感信息进行存储加密，采用区块链技术实现医疗档案的不可篡改，结合权限管理系统控制不同医护人员的访问权限。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">实现效果：</span>
+                                    <span>有效防止了患者隐私泄露，确保了医疗档案的真实性和完整性，提升了患者对医院的信任度。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">合规依据：</span>
+                                    <span>符合《中华人民共和国网络安全法》、《医疗机构病历管理规定》、《医疗质量管理办法》等法规要求。</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 高校学生档案加密 -->
+                            <div style="margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #f39c12;">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-university"></i> 高校学生档案加密</h3>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">背景：</span>
+                                    <span>某综合性大学需要管理数万学生的电子档案，包括成绩单、奖惩记录、学籍信息、家庭背景等敏感数据。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">解决方案：</span>
+                                    <span>采用AES-256加密技术对学生档案数据库进行加密存储，定期进行加密备份，结合身份认证系统实现了"加密存储+定期备份+身份认证"的多层次保护。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">实现效果：</span>
+                                    <span>有效保护了学生隐私，防止了档案数据泄露，确保了学生档案的真实性和安全性。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">合规依据：</span>
+                                    <span>符合《中华人民共和国教育法》、《高等学校档案管理办法》、《个人信息保护法》等法规要求。</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 企业财务档案加密 -->
+                            <div style="padding: 20px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #9b59b6;">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;"><i class="fas fa-industry"></i> 企业财务档案加密</h3>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">背景：</span>
+                                    <span>某上市公司需要保护财务报表、审计报告、税务资料、投资计划等敏感财务文件，防止商业机密泄露。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">解决方案：</span>
+                                    <span>使用AES-256加密算法存储财务档案，采用数字签名技术验证文件完整性，结合文件访问日志审计系统，实现了"加密存储+完整性验证+访问审计"的全面保护。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">实现效果：</span>
+                                    <span>有效防止了财务数据泄露和篡改，确保了企业财务信息的安全性和完整性，符合上市公司的合规要求。</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                                    <span style="font-weight: bold; color: #34495e;">合规依据：</span>
+                                    <span>符合《中华人民共和国会计法》、《企业会计信息化工作规范》、《上市公司信息披露管理办法》等法规要求。</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box" style="background: rgba(231, 76, 60, 0.05); border-left-color: var(--warning-color);">
+                ⚠️ <strong>注意：</strong>实际应用中应在服务器端加密，前端加密仅用于演示
+            </div>
+            
+            <!-- 返回导航栏按钮 -->
+            <div class="back-to-nav">
+                <button class="back-to-nav-btn" onclick="scrollToNavigation()">
+                    <i class="fas fa-arrow-up"></i> 浏览其他内容
+                </button>
+            </div>
+        </div>
+        
+        <!-- 非对称加密部分 -->
+        <div id="asymmetric" class="tab-content">
+            <div class="knowledge-card">
+                <h2><i class="fas fa-key"></i> 什么是非对称加密？</h2>
+                <p>
+                    <strong>非对称加密</strong>（也称为<strong>公钥加密</strong>）是一种使用<strong>一对密钥</strong>进行加密和解密的技术。
+                    这对密钥包括：
+                </p>
+                <ul>
+                    <li><strong>公钥</strong>：可以公开分享，用于加密数据</li>
+                    <li><strong>私钥</strong>：必须保密，用于解密数据</li>
+                </ul>
+                <p>
+                    非对称加密的核心特点是：<strong>用公钥加密的数据只能用对应的私钥解密，反之亦然</strong>。
+                    这种机制解决了对称加密中密钥分发的难题，广泛应用于数字签名、密钥交换和安全通信等领域。
+                </p>
+                <p>
+                    常见的非对称加密算法包括：<code>RSA</code>、<code>ECC</code>（椭圆曲线密码学）、<code>Diffie-Hellman</code>（密钥交换协议）等。
+                    其中 <code>RSA</code> 是最早也是应用最广泛的非对称加密算法之一。
+                </p>
+            </div>
+            
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-balance-scale"></i> 对称加密 vs 非对称加密</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>对比维度</th>
+                        <th><span class="modern">对称加密</span></th>
+                        <th><span class="modern">非对称加密</span></th>
+                    </tr>
+                    <tr>
+                        <td>密钥数量</td>
+                        <td>单密钥（加密解密共用）</td>
+                        <td>双密钥（公钥+私钥）</td>
+                    </tr>
+                    <tr>
+                        <td>密钥分发</td>
+                        <td>需安全渠道传递密钥</td>
+                        <td>公钥可公开，无密钥分发问题</td>
+                    </tr>
+                    <tr>
+                        <td>加密速度</td>
+                        <td>快（适合大数据量加密）</td>
+                        <td>慢（适合小数据量加密）</td>
+                    </tr>
+                    <tr>
+                        <td>安全性</td>
+                        <td>依赖密钥长度和算法强度</td>
+                        <td>基于数学难题（如大整数分解）</td>
+                    </tr>
+                    <tr>
+                        <td>应用场景</td>
+                        <td>文件加密、数据库加密、AES</td>
+                        <td>数字签名、密钥交换、TLS/SSL</td>
+                    </tr>
+                    <tr>
+                        <td>典型算法</td>
+                        <td>AES、DES、3DES</td>
+                        <td>RSA、ECC、Diffie-Hellman</td>
+                    </tr>
+                    <tr>
+                        <td>档案管理应用</td>
+                        <td>电子档案存储加密</td>
+                        <td>档案数字签名、身份验证</td>
+                    </tr>
+                </table>
+                
+                <div class="tip-box">
+                    💡 <strong>启示：</strong>在实际应用中，通常采用<strong>混合加密</strong>方案：用非对称加密安全地交换对称加密密钥，
+                    然后用对称加密高效地加密大量数据。这种方式结合了两种加密技术的优势。
+                </div>
+                
+                <!-- 数字签名演示 -->
+                <div class="card" style="margin-top: 20px; padding: 25px;">
+                    <h2 class="section-title"><i class="fas fa-signature"></i> 数字签名演示</h2>
+                    <p>数字签名是一种用于验证文档完整性和真实性的技术，它使用发送者的私钥生成签名，接收者可以使用发送者的公钥验证签名。</p>
+                    
+                    <!-- 生成数字签名 -->
+                    <h3 style="margin-top: 20px; margin-bottom: 15px; color: var(--accent-color); font-size: 1.2rem;">
+                        <i class="fas fa-pencil-alt"></i> 生成数字签名
+                    </h3>
+                    
+                    <div class="input-group">
+                        <label for="signText"><i class="fas fa-edit"></i> 输入要签名的档案内容</label>
+                        <textarea id="signText" placeholder="请输入要签名的档案内容...">这是一份机密档案</textarea>
+                    </div>
+                    
+                    <button class="btn btn-accent" onclick="generateSignature()" style="margin-top: 15px;">
+                        <i class="fas fa-lock"></i> 生成数字签名
+                    </button>
+                    
+                    <!-- 签名结果 -->
+                    <div id="signatureResultBox" style="display: none; margin-top: 20px;">
+                        <h3 style="margin-top: 20px; margin-bottom: 15px; color: var(--success-color); font-size: 1.2rem;">
+                            <i class="fas fa-shield-alt"></i> 数字签名结果
+                        </h3>
+                        
+                        <div class="input-group">
+                            <label><i class="fas fa-file-signature"></i> 生成的数字签名</label>
+                            <div class="output-box encrypted" id="signatureResult">
+                                等待签名生成...
+                            </div>
+                            <button class="copy-btn" onclick="copyToClipboard('signatureResult', this)" style="margin-top: 10px;">
+                                <i class="far fa-copy"></i> 复制签名
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 验证数字签名 -->
+                    <h3 style="margin-top: 20px; margin-bottom: 15px; color: var(--secondary-color); font-size: 1.2rem;">
+                        <i class="fas fa-check-circle"></i> 验证数字签名
+                    </h3>
+                    
+                    <div class="input-group">
+                        <label for="verifyText"><i class="fas fa-file-alt"></i> 原始档案内容</label>
+                        <textarea id="verifyText" placeholder="请输入原始档案内容...">这是一份机密档案</textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="verifySignature"><i class="fas fa-file-signature"></i> 数字签名</label>
+                        <textarea id="verifySignature" placeholder="请粘贴要验证的数字签名..."></textarea>
+                        <button class="copy-btn" onclick="useGeneratedSignature()" style="margin-top: 10px;">
+                            <i class="fas fa-paste"></i> 使用上方生成的签名
+                        </button>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="verifySignature()" style="margin-top: 15px;">
+                        <i class="fas fa-check"></i> 验证数字签名
+                    </button>
+                    
+                    <div id="verifyResult" style="margin-top: 15px;"></div>
+                    
+                    <div class="tip-box" style="margin-top: 20px;">
+                        <strong>档案学应用：</strong>数字签名在电子档案管理中用于验证档案的真实性和完整性，确保档案未被篡改，
+                        同时可以证明档案的来源，防止抵赖。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box" style="background: rgba(231, 76, 60, 0.05); border-left: 4px solid var(--warning-color); margin-top: 20px;">
+                <i class="fas fa-exclamation-triangle" style="color: var(--warning-color); margin-right: 8px;"></i>
+                <strong style="color: var(--warning-color);">注意:</strong> 实际应用中应在服务器端加密，前端加密仅用于演示
+            </div>
+            
+            <!-- 返回导航栏按钮 -->
+            <div class="back-to-nav">
+                <button class="back-to-nav-btn" onclick="scrollToNavigation()">
+                    <i class="fas fa-arrow-up"></i> 浏览其他内容
+                </button>
+            </div>
+        </div>
+        
+        <!-- 挑战部分 -->
+        <div id="challenge" class="tab-content">
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-trophy"></i> 档案加密挑战</h2>
+                <p>完成以下加密挑战，测试你的档案保护技能！</p>
+                
+                <div class="challenge-container">
+                    <!-- 挑战一：解密古代档案 -->
+                    <div class="challenge-card">
+                        <h3 class="challenge-title"><i class="fas fa-unlock-alt"></i> 挑战一：解密古代档案</h3>
+                        <p>你发现了一份古代加密档案，密文如下：</p>
+                        <div class="hint">密文：<code>DUFKLYHV</code></div>
+                        <p>提示：使用了凯撒密码，偏移量=3（A→D, B→E, C→F...）</p>
+                        <input type="text" id="challenge1Answer" placeholder="输入解密后的文本">
+                        <button class="btn btn-accent" onclick="submitChallenge1()">
+                            <i class="fas fa-check"></i> 提交答案
+                        </button>
+                        <div id="challenge1Result"></div>
+                    </div>
+                    
+                    <!-- 挑战二：AES解密挑战 -->
+                    <div class="challenge-card">
+                        <h3 class="challenge-title"><i class="fas fa-key"></i> 挑战二：AES解密挑战</h3>
+                        <p>使用AES解密以下密文，获取档案内容：</p>
+                        <div style="margin-bottom: 15px;">
+                            <strong>密文：</strong>
+                            <div style="display: flex; align-items: center; gap: 0; margin-top: 5px;">
+                                <code style="flex: 1; padding: 6px 10px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px 0 0 6px; 
+                                           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;">U2FsdGVkX19neFPFNjYsdAjU+3HtmXN0KO2UbsjJbzU=</code>
+                                <button class="copy-btn" onclick="copyToClipboard('U2FsdGVkX19neFPFNjYsdAjU+3HtmXN0KO2UbsjJbzU=', this)" 
+                                        style="padding: 6px 6px; font-size: 0.8rem; background: #f8f9fa; border: 1px solid #ddd; border-radius: 0 6px 6px 0; cursor: pointer; display: flex; align-items: center; gap: 2px; border-left: none; margin: 0; min-width: auto; width: auto;">
+                                    <i class="far fa-copy"></i> 复制
+                                </button>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>使用密钥：</strong>
+                            <div style="display: flex; align-items: center; gap: 0; margin-top: 5px;">
+                                <code style="flex: 1; padding: 6px 10px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px 0 0 6px; 
+                                           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;">EmergencyTransfer</code>
+                                <button class="copy-btn" onclick="copyToClipboard('EmergencyTransfer', this)" 
+                                        style="padding: 6px 6px; font-size: 0.8rem; background: #f8f9fa; border: 1px solid #ddd; border-radius: 0 6px 6px 0; cursor: pointer; display: flex; align-items: center; gap: 2px; border-left: none; margin: 0; min-width: auto; width: auto;">
+                                    <i class="far fa-copy"></i> 复制
+                                </button>
+                            </div>
+                        </div>
+                        <input type="text" id="challenge2Answer" placeholder="输入解密后的明文">
+                        <button class="btn btn-accent" onclick="submitChallenge2()">
+                            <i class="fas fa-check"></i> 提交答案
+                        </button>
+                        <div id="challenge2Result"></div>
+                    </div>
+                    
+                    <!-- 挑战三：思考题 -->
+                    <div class="challenge-card">
+                        <h3 class="challenge-title"><i class="fas fa-lightbulb"></i> 挑战三：思考题</h3>
+                        <p>某省级档案馆正在升级电子档案管理系统，面临存储100TB历史档案的安全挑战，其中包含数字化扫描件、音视频文件，密级分为：公开、内部、机密。<br><br> 对于这批100TB历史档案的存储加密，你会选择哪种方案？</p>
+                        <select id="challenge3Answer" style="margin: 10px 0 20px;">
+                            <option value="">请选择答案</option>
+                            <option value="A">A) 全量AES-256加密 - 对所有文件进行统一加密，使用单一主密钥</option>
+                            <option value="B">B) 分级分类加密 - 根据档案密级使用不同密钥：公开档案(不加密)、内部档案(AES-128)、机密档案(AES-256)</option>
+                            <option value="C">C) 按文件类型加密 - 文本文件用AES-256，图像/视频文件用AES-128（提高性能）</option>
+                            <option value="D">D) 混合加密方案 - 档案内容用AES-256加密，元数据（目录、索引）用AES-128加密</option>
+                        </select>
+                        <button class="btn btn-accent" onclick="submitChallenge3()">
+                            <i class="fas fa-check"></i> 提交答案
+                        </button>
+                        <div id="challenge3Result"></div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p><i class="fas fa-graduation-cap"></i> 电子文件管理课程互动展示 | 档案学专业 | 信息加密技术的古今对比</p>
+            <p>本页面仅用于教学演示，实际加密应用请遵循相关安全规范</p>
+        </footer>
+    </div>
+
+    <script>
+        // 全局变量
+        let lastEncryptedText = '';
+        let completedChallenges = 0;
+        let generatedSignature = '';
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化标签页切换
+            initTabs();
+            
+            // 初始化凯撒密码转盘
+            initCipherWheel();
+            
+            // 初始化凯撒密码偏移量监听
+            initCaesarShift();
+            
+            // 初始化折叠面板
+            initAccordion();
+        });
+        
+        // 折叠面板功能
+        function initAccordion() {
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('active');
+                });
+            });
+        }
+        
+        // 滚动到导航栏
+        function scrollToNavigation() {
+            const navigation = document.querySelector('.tabs');
+            if (navigation) {
+                navigation.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+        
+        // 标签页切换功能
+        function initTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // 移除所有按钮的active类
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    // 隐藏所有内容
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // 激活当前按钮和内容
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+        
+        // 初始化凯撒密码转盘
+        function initCipherWheel() {
+            const wheel = document.getElementById('cipherWheel');
+            if (!wheel) return;
+            
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            // 创建外圈字母
+            for (let i = 0; i < 26; i++) {
+                const angle = (i * 360 / 26) * (Math.PI / 180);
+                const radius = 85;
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+                
+                const letter = document.createElement('div');
+                letter.className = 'wheel-letter';
+                letter.textContent = letters[i];
+                letter.style.left = `calc(50% + ${x}px)`;
+                letter.style.top = `calc(50% + ${y}px)`;
+                letter.style.transform = 'translate(-50%, -50%)';
+                wheel.appendChild(letter);
+            }
+            
+            // 创建内圈字母
+            for (let i = 0; i < 26; i++) {
+                const angle = (i * 360 / 26) * (Math.PI / 180);
+                const radius = 60;
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+                
+                const letter = document.createElement('div');
+                letter.className = 'wheel-letter';
+                letter.textContent = letters[(i + 3) % 26]; // 默认偏移3
+                letter.style.left = `calc(50% + ${x}px)`;
+                letter.style.top = `calc(50% + ${y}px)`;
+                letter.style.transform = 'translate(-50%, -50%)';
+                letter.style.color = 'var(--accent-color)';
+                wheel.appendChild(letter);
+            }
+            
+            // 添加转盘中心点
+            const center = document.createElement('div');
+            center.style.position = 'absolute';
+            center.style.width = '20px';
+            center.style.height = '20px';
+            center.style.background = 'var(--ancient-color)';
+            center.style.borderRadius = '50%';
+            center.style.left = '50%';
+            center.style.top = '50%';
+            center.style.transform = 'translate(-50%, -50%)';
+            wheel.appendChild(center);
+        }
+        
+        // 初始化凯撒密码偏移量监听
+        function initCaesarShift() {
+            const caesarShift = document.getElementById('caesarShift');
+            const shiftValue = document.getElementById('shiftValue');
+            
+            if (!caesarShift || !shiftValue) return;
+            
+            // 更新偏移量显示
+            caesarShift.addEventListener('input', function() {
+                const shift = parseInt(this.value);
+                shiftValue.textContent = shift;
+                rotateCipherWheel(shift);
+            });
+        }
+        
+        // 旋转密码转盘
+        function rotateCipherWheel(shift) {
+            const wheel = document.getElementById('cipherWheel');
+            if (!wheel) return;
+            
+            const innerLetters = wheel.querySelectorAll('.wheel-letter:nth-child(n+27)');
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            // 更新内圈字母
+            innerLetters.forEach((letter, i) => {
+                letter.textContent = letters[(i + shift) % 26];
+            });
+            
+            // 添加旋转动画
+            wheel.style.transform = `rotate(${shift * 13.846}deg)`; // 360/26 ≈ 13.846
+        }
+        
+        // 改进的凯撒密码算法 - 支持中文
+        function caesarCipher(text, shift, mode = 'encrypt') {
+            shift = shift % 26; // 凯撒密码只有26个字母，所以偏移量取模26
+            if (mode === 'decrypt') {
+                shift = (26 - shift) % 26;
+            }
+            
+            return text.split('').map(char => {
+                const code = char.charCodeAt(0);
+                
+                // 处理大写字母
+                if (code >= 65 && code <= 90) {
+                    return String.fromCharCode(((code - 65 + shift) % 26) + 65);
+                }
+                
+                // 处理小写字母
+                if (code >= 97 && code <= 122) {
+                    return String.fromCharCode(((code - 97 + shift) % 26) + 97);
+                }
+                
+                // 空格和其他特殊字符不进行偏移
+                return char;
+            }).join('');
+        }
+        
+        // 凯撒密码加密
+        function encryptCaesar() {
+            const text = document.getElementById('caesarText').value;
+            const shift = parseInt(document.getElementById('caesarShift').value);
+            const resultDiv = document.getElementById('caesarResult');
+            
+            if (!text) {
+                showNotification('请输入要加密的文本！', 'error');
+                return;
+            }
+            
+            const encrypted = caesarCipher(text, shift, 'encrypt');
+            
+            resultDiv.textContent = encrypted;
+            resultDiv.classList.remove('decrypted');
+            resultDiv.classList.add('encrypted');
+            resultDiv.classList.add('highlight');
+            setTimeout(() => resultDiv.classList.remove('highlight'), 1000);
+            
+            showNotification('凯撒密码加密成功！', 'success');
+        }
+        
+        // 凯撒密码解密
+        function decryptCaesar() {
+            const caesarText = document.getElementById('caesarText');
+            const resultDiv = document.getElementById('caesarResult');
+            const shift = parseInt(document.getElementById('caesarShift').value);
+            
+            // 检查是否有加密结果可以解密
+            if (resultDiv.classList.contains('encrypted') && resultDiv.textContent !== '等待加密...') {
+                // 使用加密结果作为解密输入
+                const encryptedText = resultDiv.textContent;
+                const decrypted = caesarCipher(encryptedText, shift, 'decrypt');
+                
+                resultDiv.textContent = decrypted;
+                resultDiv.classList.remove('encrypted');
+                resultDiv.classList.add('decrypted');
+                resultDiv.classList.add('highlight');
+                setTimeout(() => resultDiv.classList.remove('highlight'), 1000);
+                
+                showNotification('凯撒密码解密成功！', 'success');
+            } else {
+                // 如果没有加密结果，就解密输入框中的文本
+                const text = caesarText.value;
+                if (!text) {
+                    showNotification('请输入要解密的文本！', 'error');
+                    return;
+                }
+                
+                const decrypted = caesarCipher(text, shift, 'decrypt');
+                
+                resultDiv.textContent = decrypted;
+                resultDiv.classList.remove('encrypted');
+                resultDiv.classList.add('decrypted');
+                resultDiv.classList.add('highlight');
+                setTimeout(() => resultDiv.classList.remove('highlight'), 1000);
+                
+                showNotification('凯撒密码解密成功！', 'success');
+            }
+        }
+        
+        // AES加密函数 - 改进版
+        function aesEncrypt() {
+            const text = document.getElementById('plaintext').value;
+            const key = document.getElementById('aesKey').value;
+            const resultDiv = document.getElementById('encryptedResult');
+            const resultBox = document.getElementById('encryptionResultBox');
+            
+            if (!text || !key) {
+                showNotification('请输入文本和密钥！', 'error');
+                return;
+            }
+            
+            try {
+                // 使用CryptoJS进行AES加密
+                const encrypted = CryptoJS.AES.encrypt(text, key).toString();
+                
+                // 显示结果
+                resultDiv.textContent = encrypted;
+                resultDiv.classList.remove('decrypted');
+                resultDiv.classList.add('encrypted');
+                resultDiv.classList.add('highlight');
+                setTimeout(() => resultDiv.classList.remove('highlight'), 1000);
+                
+                // 显示结果框
+                resultBox.style.display = 'block';
+                
+                // 保存加密结果到全局变量
+                lastEncryptedText = encrypted;
+                
+                // 自动填充到解密部分的密文输入框
+                document.getElementById('ciphertext').value = encrypted;
+                document.getElementById('decryptKey').value = key;
+                
+                showNotification('AES加密成功！', 'success');
+            } catch (e) {
+                resultDiv.textContent = '加密出错：请检查输入内容';
+                showNotification('加密出错：' + e.message, 'error');
+                console.error('AES加密错误:', e);
+            }
+        }
+        
+        // AES解密函数 - 改进版
+        function aesDecrypt() {
+            const ciphertext = document.getElementById('ciphertext').value;
+            const key = document.getElementById('decryptKey').value;
+            const resultDiv = document.getElementById('decryptedResult');
+            const resultBox = document.getElementById('decryptionResultBox');
+            
+            if (!ciphertext || !key) {
+                showNotification('请输入密文和密钥！', 'error');
+                return;
+            }
+            
+            try {
+                // 使用CryptoJS进行AES解密
+                const bytes = CryptoJS.AES.decrypt(ciphertext, key);
+                const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+                
+                if (decrypted) {
+                    // 显示解密结果
+                    resultDiv.textContent = decrypted;
+                    resultDiv.classList.remove('encrypted');
+                    resultDiv.classList.add('decrypted');
+                    resultDiv.classList.add('highlight');
+                    setTimeout(() => resultDiv.classList.remove('highlight'), 1000);
+                    
+                    // 显示结果框
+                    resultBox.style.display = 'block';
+                    
+                    showNotification('AES解密成功！', 'success');
+                } else {
+                    resultDiv.textContent = '❌ 解密失败！密钥可能不正确。';
+                    resultDiv.classList.remove('encrypted', 'decrypted');
+                    showNotification('解密失败：密钥可能不正确', 'error');
+                }
+            } catch (e) {
+                resultDiv.textContent = '解密出错：请确保输入的是有效的AES加密文本';
+                resultDiv.classList.remove('encrypted', 'decrypted');
+                showNotification('解密出错：请检查输入格式', 'error');
+                console.error('AES解密错误:', e);
+            }
+        }
+        
+        // 生成随机密钥
+        function generateRandomKey() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+            let key = '';
+            
+            // 生成16位随机密钥
+            for (let i = 0; i < 16; i++) {
+                key += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            document.getElementById('aesKey').value = key;
+            showNotification('随机密钥已生成！', 'success');
+        }
+        
+        // 使用加密结果填充解密输入框
+        function useEncryptedResult() {
+            if (lastEncryptedText) {
+                document.getElementById('ciphertext').value = lastEncryptedText;
+                document.getElementById('decryptKey').value = document.getElementById('aesKey').value;
+                showNotification('已使用最新加密结果填充', 'success');
+            } else {
+                showNotification('请先执行一次加密操作', 'error');
+            }
+        }
+        
+        // 复制到剪贴板
+        function copyToClipboard(elementId, button) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // 显示复制成功反馈
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+                
+                showNotification('已复制到剪贴板', 'success');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                showNotification('复制失败，请手动选择文本复制', 'error');
+            });
+        }
+        
+        // 挑战一：凯撒密码解密
+        function submitChallenge1() {
+            const answer = document.getElementById('challenge1Answer').value.trim().toUpperCase();
+            const resultDiv = document.getElementById('challenge1Result');
+            
+            // 凯撒密码解密，偏移量为3
+            const decrypted = caesarCipher('DUFKLYHV', 3, 'decrypt');
+            
+            if (answer === decrypted) {
+                resultDiv.innerHTML = '<span style="color:var(--success-color);"><i class="fas fa-check-circle"></i> 正确！成功解密古代档案。答案是："ARCHIVES"</span>';
+                completeChallenge();
+                document.querySelector('#challenge1Answer').disabled = true;
+                document.querySelector('#challenge1Answer + button').disabled = true;
+                showNotification('挑战一完成！', 'success');
+            } else {
+                resultDiv.innerHTML = '<span style="color:var(--warning-color);"><i class="fas fa-times-circle"></i> 答案不正确，再试试看！提示：A→D, R→U, C→F...</span>';
+            }
+        }
+        
+        // 挑战二：AES解密挑战
+        function submitChallenge2() {
+            const answer = document.getElementById('challenge2Answer').value.trim().toUpperCase();
+            const resultDiv = document.getElementById('challenge2Result');
+            
+            // 使用真实的AES密文和密钥
+            const originalText = 'HELLO WORLD';
+            
+            try {
+                // 验证用户输入是否正确
+                if (answer === originalText) {
+                    resultDiv.innerHTML = '<span style="color:var(--success-color);"><i class="fas fa-check-circle"></i> 正确！成功解密AES密文。答案是："HELLO WORLD"</span>';
+                    completeChallenge();
+                    document.querySelector('#challenge2Answer').disabled = true;
+                    document.querySelector('#challenge2Answer + button').disabled = true;
+                    showNotification('挑战二完成！', 'success');
+                } else {
+                    resultDiv.innerHTML = '<span style="color:var(--warning-color);"><i class="fas fa-times-circle"></i> 答案不正确，再试试看！确保输入的是解密后的完整明文。</span>';
+                }
+            } catch (e) {
+                resultDiv.innerHTML = '<span style="color:var(--warning-color);"><i class="fas fa-times-circle"></i> 解密过程出错，请刷新页面重试。</span>';
+            }
+        }
+        
+        // 复制到剪贴板功能
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    const originalIcon = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                    button.style.background = 'var(--success-color)';
+                    button.style.color = 'white';
+                    
+                    // 3秒后恢复原样
+                    setTimeout(() => {
+                        button.innerHTML = originalIcon;
+                        button.style.background = '';
+                        button.style.color = '';
+                    }, 3000);
+                    
+                    showNotification('已复制到剪贴板！', 'success');
+                })
+                .catch(err => {
+                    showNotification('复制失败，请手动复制！', 'error');
+                });
+        }
+        
+        // 挑战三：思考题
+        function submitChallenge3() {
+            const answer = document.getElementById('challenge3Answer').value;
+            const resultDiv = document.getElementById('challenge3Result');
+            
+            if (!answer) {
+                resultDiv.innerHTML = '<span style="color:var(--warning-color);">请选择一个答案！</span>';
+                return;
+            }
+            
+            if (answer === 'B') {
+                resultDiv.innerHTML = '<span style="color:var(--success-color);"><i class="fas fa-check-circle"></i> 正确！分级分类加密方案能根据档案密级实施差异化保护，平衡安全性与性能需求，符合档案管理规范。</span>';
+                completeChallenge();
+                document.getElementById('challenge3Answer').disabled = true;
+                document.querySelector('#challenge3Answer + button').disabled = true;
+                showNotification('挑战三完成！', 'success');
+            } else {
+                resultDiv.innerHTML = '<span style="color:var(--warning-color);"><i class="fas fa-times-circle"></i> 答案不正确，再思考一下！提示：考虑档案密级、性能需求和管理规范。</span>';
+            }
+        }
+        
+        // 完成挑战
+        function completeChallenge() {
+            completedChallenges++;
+            
+            // 如果所有挑战完成
+            if (completedChallenges === 3) {
+                setTimeout(() => {
+                    showNotification('恭喜！你已完成所有档案加密挑战！', 'success');
+                }, 500);
+            }
+        }
+        
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            // 移除之前的通知
+            const oldNotification = document.querySelector('.notification');
+            if (oldNotification) oldNotification.remove();
+            
+            // 创建新通知
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // 3秒后移除
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+        // 生成数字签名
+        function generateSignature() {
+            const text = document.getElementById('signText').value;
+            const resultBox = document.getElementById('signatureResultBox');
+            const resultDiv = document.getElementById('signatureResult');
+            
+            try {
+                // 使用CryptoJS生成HMAC签名（模拟数字签名）
+                const signature = CryptoJS.HmacSHA256(text, 'ArchivePrivateKey2024').toString(CryptoJS.enc.Base64);
+                generatedSignature = signature;
+                
+                resultDiv.textContent = signature;
+                resultBox.style.display = 'block';
+                showNotification('数字签名生成成功！', 'success');
+            } catch (e) {
+                resultDiv.innerHTML = '<span style="color:var(--warning-color);">签名生成失败</span>';
+                resultBox.style.display = 'block';
+            }
+        }
+        
+        // 使用生成的签名
+        function useGeneratedSignature() {
+            if (generatedSignature) {
+                document.getElementById('verifySignature').value = generatedSignature;
+                document.getElementById('verifyText').value = document.getElementById('signText').value;
+                showNotification('签名已复制到验证区域！', 'info');
+            } else {
+                showNotification('请先生成数字签名！', 'warning');
+            }
+        }
+        
+        // 验证数字签名
+        function verifySignature() {
+            const text = document.getElementById('verifyText').value;
+            const signature = document.getElementById('verifySignature').value;
+            const resultDiv = document.getElementById('verifyResult');
+            
+            try {
+                // 使用相同的算法验证签名
+                const expectedSignature = CryptoJS.HmacSHA256(text, 'ArchivePrivateKey2024').toString(CryptoJS.enc.Base64);
+                
+                if (signature === expectedSignature) {
+                    resultDiv.innerHTML = '<span style="color:var(--success-color);"><i class="fas fa-check-circle"></i> 数字签名验证成功！档案未被篡改，来源可信。</span>';
+                    showNotification('签名验证成功！', 'success');
+                } else {
+                    resultDiv.innerHTML = '<span style="color:var(--warning-color);"><i class="fas fa-times-circle"></i> 数字签名验证失败！档案可能已被篡改或签名错误。</span>';
+                    showNotification('签名验证失败！', 'error');
+                }
+            } catch (e) {
+                resultDiv.innerHTML = '<span style="color:var(--warning-color);"><i class="fas fa-times-circle"></i> 验证失败，请检查输入。</span>';
+            }
+        }
+    </script>
+</body>
+</html>
