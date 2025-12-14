@@ -774,6 +774,9 @@
             max-width: 100%;
             transition: all 0.3s ease;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 450px;
         }
         
         .challenge-card:hover {
@@ -834,7 +837,7 @@
         
         .challenge-card button {
             width: 100%;
-            margin-top: 15px;
+            margin-top: auto;
             padding: 14px 20px;
             font-size: 1rem;
             font-weight: 600;
@@ -1372,7 +1375,7 @@
                     <h4 style="margin-top: 15px; margin-bottom: 10px; color: var(--ancient-color);">阴符体系</h4>
                     <p>
                         将竹符按长度分级（三寸至一尺），每级对应特定战况（如“三寸符”代表战败，“九寸符”象征全胜）。
-                        这种用物理符号替代明文的方式，恰似现代的状态码加密（如HTTP 404错误码），通过约定语义规避信息泄露风险。
+                        这种用预先约定的物理符号直接指代复杂信息的”符—意“映射方式，其核心思想与现代通信协议中的“指令集”或“信号编码”有相通之处，即通过一套双方共享的“密码本”来传递信息。。
                     </p>
                     <h4 style="margin-top: 15px; margin-bottom: 10px; color: var(--ancient-color);">阴书方案</h4>
                     <p>
@@ -2022,7 +2025,7 @@
                     <!-- 挑战三：思考题 -->
                     <div class="challenge-card">
                         <h3 class="challenge-title"><i class="fas fa-lightbulb"></i> 挑战三：思考题</h3>
-                        <p>某省级档案馆正在升级电子档案管理系统，面临存储100TB历史档案的安全挑战，其中包含数字化扫描件、音视频文件，密级分为：公开、内部、机密。<br><br> 对于这批100TB历史档案的存储加密，你会选择哪种方案？</p>
+                        <p>某档案馆正在升级电子档案管理系统，面临存储100TB历史档案的安全挑战，其中包含数字化扫描件、音视频文件，密级分为：公开、内部、机密。在满足国家档案保密等级规定的前提下，请综合考虑安全性、系统性能和长期管理成本，你会选择哪种存储方案？</p>
                         <select id="challenge3Answer" style="margin: 10px 0 20px;">
                             <option value="">请选择答案</option>
                             <option value="A">A) 全量AES-256加密 - 对所有文件进行统一加密，使用单一主密钥</option>
@@ -2492,7 +2495,7 @@
             }
             
             if (answer === 'B') {
-                resultDiv.innerHTML = '<span style="color:var(--success-color);"><i class="fas fa-check-circle"></i> 正确！分级分类加密方案能根据档案密级实施差异化保护，平衡安全性与性能需求，符合档案管理规范。</span>';
+                resultDiv.innerHTML = '<span style="color:var(--success-color);"><i class="fas fa-check-circle"></i> 正确！推荐答案B。分级分类加密方案是档案管理领域的标准实践，它严格遵循了国家关于档案密级的管理规定，实现了安全性与管理效率的最佳平衡。</span>';
                 completeChallenge();
                 document.getElementById('challenge3Answer').disabled = true;
                 document.querySelector('#challenge3Answer + button').disabled = true;
