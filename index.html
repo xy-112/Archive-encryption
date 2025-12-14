@@ -208,6 +208,93 @@
             font-size: 0.95em;
         }
         
+        /* 新增框图样式 */
+        /* 核心特点框图 */
+        .feature-box {
+            background: rgba(231, 245, 255, 0.8);
+            border-left: 4px solid #90caf9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 应用场景框图 */
+        .scenario-box {
+            background: rgba(237, 247, 237, 0.8);
+            border-left: 4px solid #a5d6a7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 算法列表框图 */
+        .algorithm-box {
+            background: rgba(255, 253, 231, 0.8);
+            border-left: 4px solid #ffe082;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 密钥对框图 */
+        .key-pair-box {
+            background: rgba(243, 232, 245, 0.8);
+            border-left: 4px solid #ce93d8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 框图装饰元素 */
+        .feature-box::before, .scenario-box::before, .algorithm-box::before, .key-pair-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            opacity: 0.05;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top right;
+        }
+        
+        .feature-box::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231976d2"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>');
+        }
+        
+        .scenario-box::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2343a047"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>');
+        }
+        
+        .algorithm-box::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f57c00"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>');
+        }
+        
+        .key-pair-box::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238e24aa"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>');
+        }
+        
+        /* 框图标题样式 */
+        .box-title {
+            font-weight: 600;
+            color: #0d47a1;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
         code {
             background: rgba(0, 0, 0, 0.05);
             padding: 3px 8px;
@@ -1039,6 +1126,16 @@
                 margin-bottom: 8px;
             }
             
+            /* 优化框图在手机端的显示 */
+            .feature-box, .scenario-box, .algorithm-box, .key-pair-box {
+                padding: 12px;
+                margin: 12px 0;
+            }
+            
+            .box-title {
+                font-size: 1.05rem;
+            }
+            
             /* 挑战区域响应式优化 */
             .challenge-container {
                 grid-template-columns: 1fr;
@@ -1369,20 +1466,20 @@
                         <div class="accordion-content">
                             <h4 style="color: var(--primary-color); margin-top: 0; margin-bottom: 15px;"><i class="fas fa-thumbs-up"></i> 优点</h4>
                             <ul>
-                                <li><strong>加密速度快</strong>：对称加密算法运算简单，处理大数据量时效率远高于非对称加密</li>
-                                <li><strong>效率高</strong>：占用系统资源少，适合在各种设备上运行</li>
-                                <li><strong>算法成熟</strong>：经过长期实践验证，安全性得到广泛认可</li>
-                                <li><strong>密钥长度相对较短</strong>：相同安全性下，对称加密密钥长度通常比非对称加密短得多</li>
-                                <li><strong>适合大数据量加密</strong>：广泛应用于文件加密、数据库加密等场景</li>
+                                <li><strong>加密速度快</strong>对称加密算法运算简单，处理大数据量时效率远高于非对称加密</li>
+                                <li><strong>效率高</strong>占用系统资源少，适合在各种设备上运行</li>
+                                <li><strong>算法成熟</strong>经过长期实践验证，安全性得到广泛认可</li>
+                                <li><strong>密钥长度相对较短</strong>相同安全性下，对称加密密钥长度通常比非对称加密短得多</li>
+                                <li><strong>适合大数据量加密</strong>广泛应用于文件加密、数据库加密等场景</li>
                             </ul>
                             
                             <h4 style="color: var(--primary-color); margin-top: 20px; margin-bottom: 15px;"><i class="fas fa-thumbs-down"></i> 局限</h4>
                             <ul>
-                                <li><strong>密钥分发问题</strong>：需要安全渠道传递密钥，否则容易被窃取</li>
-                                <li><strong>密钥管理困难</strong>：每对通信方需要独立密钥，多用户环境下密钥数量呈几何级增长</li>
-                                <li><strong>缺乏不可否认性</strong>：无法证明消息来源，容易发生抵赖</li>
-                                <li><strong>不适合多用户环境</strong>：密钥数量过多，管理复杂度高</li>
-                                <li><strong>密钥泄露风险</strong>：一旦密钥泄露，所有加密数据都将面临风险</li>
+                                <li><strong>密钥分发问题</strong>需要安全渠道传递密钥，否则容易被窃取</li>
+                                <li><strong>密钥管理困难</strong>每对通信方需要独立密钥，多用户环境下密钥数量呈几何级增长</li>
+                                <li><strong>缺乏不可否认性</strong>无法证明消息来源，容易发生抵赖</li>
+                                <li><strong>不适合多用户环境</strong>密钥数量过多，管理复杂度高</li>
+                                <li><strong>密钥泄露风险</strong>一旦密钥泄露，所有加密数据都将面临风险</li>
                             </ul>
                             
                             <p style="margin-top: 20px; line-height: 1.7;">
@@ -1686,28 +1783,47 @@
                 <h2><i class="fas fa-key"></i> 什么是非对称加密？</h2>
                 <p>
                     <strong>非对称加密</strong>（也称为<strong>公钥加密</strong>）是一种使用<strong>一对密钥</strong>进行加密和解密的技术。
-                    这对密钥包括：
                 </p>
-                <ul>
-                    <li><strong>公钥</strong>：可以公开分享，用于加密数据</li>
-                    <li><strong>私钥</strong>：必须保密，用于解密数据</li>
-                </ul>
-                <p>
-                    非对称加密的核心特点是：<strong>用公钥加密的数据只能用对应的私钥解密，反之亦然</strong>。
-                    这种机制解决了对称加密中密钥分发的难题，广泛应用于数字签名、密钥交换和安全通信等领域。
-                </p>
-                <p>
-                    <strong>加密场景：</strong>在加密场景中，我们希望只有自己才能解密，别人只能加密。
-                    这正是非对称加密的典型应用：<strong>公钥加密，私钥解密</strong>。
-                </p>
-                <p>
-                    <strong>签名场景：</strong>在签名场景中，既然是签名，就希望只有自己才能签名，别人只能验证。
-                    这对应非对称加密的另一种应用模式：<strong>私钥签名，公钥验签</strong>。
-                </p>
-                <p>
-                    常见的非对称加密算法包括：<code>RSA</code>、<code>ECC</code>（椭圆曲线密码学）、<code>Diffie-Hellman</code>（密钥交换协议）等。
-                    其中 <code>RSA</code> 是最早也是应用最广泛的非对称加密算法之一。
-                </p>
+                
+                <!-- 密钥对框图 -->
+                <div class="key-pair-box">
+                    <span class="box-title">密钥对组成：</span>
+                    <ul>
+                        <li><strong>公钥</strong>：可以公开分享，用于加密数据</li>
+                        <li><strong>私钥</strong>：必须保密，用于解密数据</li>
+                    </ul>
+                </div>
+                
+                <!-- 核心特点框图 -->
+                <div class="feature-box">
+                    <span class="box-title">核心特点：</span>
+                    <p>
+                        用公钥加密的数据只能用对应的私钥解密，反之亦然。
+                        这种机制解决了对称加密中密钥分发的难题，广泛应用于数字签名、密钥交换和安全通信等领域。
+                    </p>
+                </div>
+                
+                <!-- 应用场景框图 -->
+                <div class="scenario-box">
+                    <span class="box-title">应用场景：</span>
+                    <p>
+                        <strong>加密场景：</strong>在加密场景中，我们希望只有自己才能解密，别人只能加密。
+                        这正是非对称加密的典型应用：<strong>公钥加密，私钥解密</strong>。
+                    </p>
+                    <p>
+                        <strong>签名场景：</strong>在签名场景中，既然是签名，就希望只有自己才能签名，别人只能验证。
+                        这对应非对称加密的另一种应用模式：<strong>私钥签名，公钥验签</strong>。
+                    </p>
+                </div>
+                
+                <!-- 算法列表框图 -->
+                <div class="algorithm-box">
+                    <span class="box-title">常见算法：</span>
+                    <p>
+                        常见的非对称加密算法包括：<code>RSA</code>、<code>ECC</code>（椭圆曲线密码学）、<code>Diffie-Hellman</code>（密钥交换协议）等。
+                        其中 <code>RSA</code> 是最早也是应用最广泛的非对称加密算法之一。
+                    </p>
+                </div>
             </div>
             
             <div class="card">
