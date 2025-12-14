@@ -170,13 +170,42 @@
             margin-top: 0;
             color: #0d47a1;
             font-size: 1.6rem;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+            font-weight: 600;
         }
         
         .knowledge-card p {
-            line-height: 1.7;
-            margin-bottom: 15px;
+            line-height: 1.8;
+            margin-bottom: 18px;
             font-size: 1.05rem;
+            text-align: justify;
+        }
+        
+        .knowledge-card ul {
+            line-height: 1.8;
+            margin-bottom: 18px;
+            padding-left: 22px;
+        }
+        
+        .knowledge-card li {
+            margin-bottom: 10px;
+        }
+        
+        /* 优化强调文本样式 */
+        .knowledge-card strong {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+        
+        /* 优化代码样式 */
+        .knowledge-card code {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d35400;
+            font-weight: bold;
+            font-size: 0.95em;
         }
         
         code {
@@ -559,6 +588,83 @@
             flex-shrink: 0;
         }
         
+        /* 优化手机端AES流程可视化 */
+        @media (max-width: 768px) {
+            /* 调整整体容器 */
+            .encryption-process {
+                padding: 15px 10px;
+                margin: 20px 0;
+            }
+            
+            /* 调整步骤行间距 */
+            .process-row {
+                margin-bottom: 15px;
+            }
+            
+            /* 优化步骤项 */
+            .process-step {
+                min-width: 80px;
+                margin: 0 3px;
+            }
+            
+            /* 调整图标大小 */
+            .step-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+            
+            /* 调整文本大小 */
+            .step-text {
+                font-size: 0.8rem;
+            }
+            
+            /* 调整箭头大小和间距 */
+            .process-arrow {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+            
+            /* 确保在小屏幕上步骤能够正确换行 */
+            .process-row {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* 进一步优化小屏幕 */
+            .encryption-process {
+                padding: 12px 8px;
+                margin: 15px 0;
+            }
+            
+            /* 调整步骤项间距 */
+            .process-step {
+                min-width: 75px;
+                margin: 5px 3px;
+            }
+            
+            /* 调整图标大小 */
+            .step-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+                margin-bottom: 6px;
+            }
+            
+            /* 调整文本大小 */
+            .step-text {
+                font-size: 0.75rem;
+            }
+            
+            /* 调整箭头大小 */
+            .process-arrow {
+                font-size: 1rem;
+                margin: 0 3px;
+            }
+        }
+        
         /* 挑战区域 */
         .challenge-container {
             display: grid;
@@ -910,6 +1016,27 @@
             .section-title {
                 font-size: 1.5rem;
                 margin-bottom: 15px;
+            }
+            
+            /* 优化知识点卡片在手机端的显示 */
+            .knowledge-card h2 {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+            }
+            
+            .knowledge-card p {
+                font-size: 1rem;
+                line-height: 1.7;
+                margin-bottom: 15px;
+            }
+            
+            .knowledge-card ul {
+                padding-left: 20px;
+            }
+            
+            .knowledge-card li {
+                font-size: 1rem;
+                margin-bottom: 8px;
             }
             
             /* 挑战区域响应式优化 */
@@ -1576,7 +1703,6 @@
                 <p>
                     <strong>签名场景：</strong>在签名场景中，既然是签名，就希望只有自己才能签名，别人只能验证。
                     这对应非对称加密的另一种应用模式：<strong>私钥签名，公钥验签</strong>。
-                   
                 </p>
                 <p>
                     常见的非对称加密算法包括：<code>RSA</code>、<code>ECC</code>（椭圆曲线密码学）、<code>Diffie-Hellman</code>（密钥交换协议）等。
