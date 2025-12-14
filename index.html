@@ -875,17 +875,54 @@
         }
         
         @media (max-width: 768px) {
+            /* 减少整体页面边距 */
+            body { padding: 10px; }
+            .container { padding: 0 8px; }
+            
+            /* 调整标题和组件大小 */
             h1 { font-size: 2rem; }
-            .tabs { flex-direction: column; }
-            .tab-btn { width: 100%; }
-            .challenge-container { grid-template-columns: 1fr; }
-            .section-title { font-size: 1.5rem; }
+            
+            /* 减少header边距 */
+            header {
+                margin-bottom: 15px;
+                padding: 18px 15px;
+            }
+            
+            /* 调整标签页 */
+            .tabs {
+                flex-direction: column;
+                margin-bottom: 20px;
+                padding: 8px;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                padding: 10px 20px;
+                margin: 3px 0;
+            }
+            
+            /* 减少卡片间距和内边距 */
+            .card, .knowledge-card {
+                margin-bottom: 15px;
+                padding: 18px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
             
             /* 挑战区域响应式优化 */
+            .challenge-container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 0;
+            }
+            
             .challenge-card {
-                padding: 15px;
-                margin: 0 auto;
-                width: calc(100% - 10px);
+                padding: 12px;
+                margin: 0;
+                width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
                 overflow: hidden;
@@ -898,7 +935,7 @@
             
             .challenge-card p {
                 font-size: 0.9rem;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
                 word-break: break-word;
             }
             
@@ -920,7 +957,7 @@
             /* 密文和密钥样式优化 */
             .hint {
                 padding: 10px;
-                margin: 15px 0;
+                margin: 10px 0;
                 word-break: break-all;
             }
             
@@ -936,7 +973,7 @@
             
             /* 改进AES流程响应式 */
             .encryption-process {
-                padding: 15px 10px;
+                padding: 12px 8px;
                 overflow-x: auto;
             }
             
@@ -954,7 +991,7 @@
             
             .process-step {
                 min-width: 85px;
-                margin: 10px 5px;
+                margin: 8px 4px;
             }
             
             .step-text {
@@ -965,13 +1002,58 @@
                 font-size: 1.2rem;
                 margin: 0 5px;
             }
+            
+            /* 优化档案管理案例响应式样式 */
+            .accordion-content > div {
+                margin-bottom: 12px !important;
+                padding: 12px !important;
+            }
+            
+            /* 调整案例标题字体大小 */
+            .accordion-content h3 {
+                font-size: 1.1rem !important;
+                margin-bottom: 8px !important;
+            }
+            
+            /* 调整案例内小标题和内容布局，在小屏幕上垂直排列 */
+            .accordion-content strong {
+                display: block !important;
+                width: 100% !important;
+                margin-bottom: 3px !important;
+            }
+            
+            .accordion-content span {
+                display: block !important;
+                width: 100% !important;
+            }
         }
         
         @media (max-width: 480px) {
             /* 小屏幕设备优化 */
-            .challenge-card {
+            /* 进一步减少边距 */
+            body { padding: 8px; }
+            .container { padding: 0 5px; }
+            
+            /* 调整header和卡片 */
+            header {
+                margin-bottom: 12px;
+                padding: 15px 12px;
+            }
+            
+            .card, .knowledge-card {
+                margin-bottom: 12px;
                 padding: 15px;
-                max-width: 100%;
+            }
+            
+            /* 优化挑战区域 */
+            .challenge-container {
+                gap: 10px;
+                padding: 0;
+            }
+            
+            .challenge-card {
+                padding: 10px;
+                margin: 0;
             }
             
             .challenge-title {
@@ -981,13 +1063,7 @@
                 gap: 5px;
             }
             
-            .challenge-container {
-                gap: 15px;
-                padding: 0 5px;
-            }
-        }
-        
-        @media (max-width: 480px) {
+            /* 优化AES流程 */
             .process-steps-container {
                 min-width: auto;
             }
@@ -999,7 +1075,7 @@
             
             .process-step {
                 min-width: 80px;
-                margin: 10px 5px;
+                margin: 8px 4px;
             }
             
             .step-icon {
@@ -1018,31 +1094,13 @@
             }
         }
         
-        /* 档案管理案例响应式样式 */
-        @media (max-width: 768px) {
-            /* 调整案例标题字体大小 */
-            .accordion-content h3 {
-                font-size: 1.1rem !important;
-            }
-            
-            /* 调整案例内小标题和内容布局，在小屏幕上垂直排列 */
-            .accordion-content strong {
-                display: block !important;
-                width: 100% !important;
-                margin-bottom: 3px !important;
-            }
-            
-            .accordion-content span {
-                display: block !important;
-                width: 100% !important;
-            }
-            
-            /* 调整案例卡片间距 */
-            .accordion-content > div {
-                margin-bottom: 15px !important;
-                padding: 12px !important;
-            }
+        /* 优化档案管理案例在所有屏幕尺寸下的样式 */
+        .accordion-content > div {
+            margin-bottom: 15px;
+            padding: 15px;
         }
+        
+        /* 档案管理案例响应式样式 - 合并到主媒体查询块中 */
     </style>
 </head>
 <body>
@@ -1514,12 +1572,11 @@
                 <p>
                     <strong>加密场景：</strong>在加密场景中，我们希望只有自己才能解密，别人只能加密。
                     这正是非对称加密的典型应用：<strong>公钥加密，私钥解密</strong>。
-                    例如，当他人想要给我们发送加密信息时，他们可以使用我们公开的公钥进行加密，而只有我们持有对应的私钥才能解密读取。
                 </p>
                 <p>
                     <strong>签名场景：</strong>在签名场景中，既然是签名，就希望只有自己才能签名，别人只能验证。
                     这对应非对称加密的另一种应用模式：<strong>私钥签名，公钥验签</strong>。
-                    例如，我们使用自己的私钥对文件进行签名，任何人都可以使用我们的公钥验证该签名的真实性，从而确认文件确实是由我们签发的。
+                   
                 </p>
                 <p>
                     常见的非对称加密算法包括：<code>RSA</code>、<code>ECC</code>（椭圆曲线密码学）、<code>Diffie-Hellman</code>（密钥交换协议）等。
