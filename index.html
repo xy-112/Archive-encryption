@@ -1342,7 +1342,7 @@
         <!-- 标签页导航 -->
         <div class="tabs">
             <button class="tab-btn active" data-tab="caesar">
-                <i class="fas fa-exchange-alt"></i> 凯撒密码
+                <i class="fas fa-scroll"></i> 古代加密术
             </button>
             <button class="tab-btn" data-tab="introduction">
                 <i class="fas fa-info-circle"></i> 对称加密
@@ -1358,40 +1358,85 @@
             </button>
         </div>
         
-        <!-- 凯撒密码部分 -->
+        <!-- 古代加密术部分 -->
         <div id="caesar" class="tab-content active">
             <div class="card">
-                <h2 class="section-title"><i class="fas fa-history"></i> 凯撒密码 - 古代加密技术</h2>
-                <p>凯撒密码是古罗马凯撒大帝用来保护重要军情的加密方法。它通过将字母按照固定数目进行偏移来加密信息。</p>
+                <h2 class="section-title"><i class="fas fa-history"></i> 古代加密术</h2>
                 
-                <div class="visualization">
-                    <div class="cipher-wheel" id="cipherWheel">
-                        <!-- 通过JS动态生成 -->
+                <!-- 姜子牙的阴符阴书 -->
+                <div class="knowledge-card" style="margin-bottom: 25px;">
+                    <h3><i class="fas fa-scroll"></i> 姜子牙的“阴符阴书”</h3>
+                    <p>
+                        《六韬·龙韬》记载，姜子牙为周武王设计了两套军情加密系统：
+                    </p>
+                    <h4 style="margin-top: 15px; margin-bottom: 10px; color: var(--ancient-color);">阴符体系</h4>
+                    <p>
+                        将竹符按长度分级（三寸至一尺），每级对应特定战况（如“三寸符”代表战败，“九寸符”象征全胜）。
+                        这种用物理符号替代明文的方式，恰似现代的状态码加密（如HTTP 404错误码），通过约定语义规避信息泄露风险。
+                    </p>
+                    <h4 style="margin-top: 15px; margin-bottom: 10px; color: var(--ancient-color);">阴书方案</h4>
+                    <p>
+                        将完整情报拆分为三卷，由不同信使经三条路线传递。即使敌方截获其中一卷，也无法还原全局信息。
+                        这完美契合1979年Adi Shamir提出的门限秘密共享（Threshold Secret Sharing）原理，成为分布式存储技术的远古雏形。
+                    </p>
+                </div>
+                
+                <!-- 凯撒密码 -->
+                <div class="knowledge-card">
+                    <h3><i class="fas fa-exchange-alt"></i> 古罗马的“凯撒密码”</h3>
+                    <p>凯撒密码是古罗马凯撒大帝用来保护重要军情的加密方法。它通过将字母按照固定数目进行偏移来加密信息。</p>
+                    
+                    <div class="visualization">
+                        <div class="cipher-wheel" id="cipherWheel">
+                            <!-- 通过JS动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="caesarText"><i class="fas fa-edit"></i> 输入要加密的文本：</label>
+                        <textarea id="caesarText" placeholder="请输入要加密的档案内容...">Archive</textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="caesarShift"><i class="fas fa-sliders-h"></i> 选择偏移量：</label>
+                        <input type="range" id="caesarShift" min="1" max="25" value="3">
+                        <span id="shiftValue" style="font-weight:bold; color:var(--ancient-color); margin-left:10px;">3</span>
+                    </div>
+                    
+                    <button class="btn" onclick="encryptCaesar()">
+                        <i class="fas fa-lock"></i> 加密文本
+                    </button>
+                    
+                    <div class="output-box" id="caesarResult">
+                        等待加密...
+                    </div>
+                    
+                    <div class="tip-box" style="margin-top: 15px;">
+                        <strong>档案学应用：</strong>在古代档案馆中，类似凯撒密码的方法被用于保护重要文献的目录索引，
+                        只有掌握偏移规则的管理员才能找到特定文献的位置。
                     </div>
                 </div>
                 
-                <div class="input-group">
-                    <label for="caesarText"><i class="fas fa-edit"></i> 输入要加密的文本：</label>
-                    <textarea id="caesarText" placeholder="请输入要加密的档案内容...">Archive</textarea>
-                </div>
-                
-                <div class="input-group">
-                    <label for="caesarShift"><i class="fas fa-sliders-h"></i> 选择偏移量：</label>
-                    <input type="range" id="caesarShift" min="1" max="25" value="3">
-                    <span id="shiftValue" style="font-weight:bold; color:var(--ancient-color); margin-left:10px;">3</span>
-                </div>
-                
-                <button class="btn" onclick="encryptCaesar()">
-                    <i class="fas fa-lock"></i> 加密文本
-                </button>
-                
-                <div class="output-box" id="caesarResult">
-                    等待加密...
-                </div>
-                
-                <div class="tip-box">
-                    <strong>档案学应用：</strong>在古代档案馆中，类似凯撒密码的方法被用于保护重要文献的目录索引，
-                    只有掌握偏移规则的管理员才能找到特定文献的位置。
+                <!-- 猪圈密码 -->
+                <div class="knowledge-card">
+                    <h3><i class="fas fa-cube"></i> 18世纪的"猪圈密码"</h3>
+                    <p>猪圈密码是一种基于几何图形替换的简单替换密码，因其编码时画的格子很像把字母关进一个个"猪圈"而得名。由于其被共济会广泛使用，它也被称为共济会密码或共济会员密码。</p>
+                    
+                    <div style="text-align: center; margin: 25px 0;">
+                        <img src="image2.png" alt="猪圈密码示意图" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                    
+                    <p>该密码的核心在于一个固定的 3x3 方格图：</p>
+                    <ul>
+                        <li>将字母按照一定规则填入方格中</li>
+                        <li>对于包含26个字母的英文，通常需要两个格子来处理I/J，或扩展一个格子</li>
+                        <li>加密时，根据字母所在的方格位置和方向绘制相应的符号</li>
+                        <li>解密时，通过识别符号对应的方格位置还原出原始字母</li>
+                    </ul>
+                    
+                    <div class="tip-box" style="margin-top: 15px;">
+                        <strong>档案学应用：</strong>在古代秘密社团的档案管理中，猪圈密码被用于标记重要文件的存放位置和访问权限，只有掌握密码规则的成员才能解读这些标记。
+                    </div>
                 </div>
             </div>
             
