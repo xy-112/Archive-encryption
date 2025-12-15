@@ -2646,27 +2646,7 @@
         }
         
         // 复制到剪贴板
-        function copyToClipboard(elementId, button) {
-            const element = document.getElementById(elementId);
-            const text = element.textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                // 显示复制成功反馈
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                button.classList.add('copied');
-                
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-                
-                showNotification('已复制到剪贴板', 'success');
-            }).catch(err => {
-                console.error('复制失败:', err);
-                showNotification('复制失败，请手动选择文本复制', 'error');
-            });
-        }
+
         
         // 挑战一：凯撒密码解密
         function submitChallenge1() {
@@ -2712,7 +2692,19 @@
         }
         
         // 复制到剪贴板功能
-        function copyToClipboard(text, button) {
+        function copyToClipboard(textOrElementId, button) {
+            let text;
+            
+            // 检查参数是元素ID还是直接文本
+            const element = document.getElementById(textOrElementId);
+            if (element) {
+                // 如果是元素ID，获取元素内容
+                text = element.textContent || element.value;
+            } else {
+                // 如果是直接文本，直接使用
+                text = textOrElementId;
+            }
+            
             navigator.clipboard.writeText(text)
                 .then(() => {
                     const originalIcon = button.innerHTML;
@@ -2730,6 +2722,7 @@
                     showNotification('已复制到剪贴板！', 'success');
                 })
                 .catch(err => {
+                    console.error('复制失败:', err);
                     showNotification('复制失败，请手动复制！', 'error');
                 });
         }
