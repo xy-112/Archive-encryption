@@ -172,6 +172,12 @@
             border-left: 6px solid #81c784;
         }
         
+        /* 姜子牙阴符阴书专用样式 */
+        .knowledge-card.ancient-chinese-military {
+            background: #f0f8ff;
+            border-left: 6px solid #4db6ac;
+        }
+        
         .knowledge-card.ancient-roman {
             background: #fffef8;
             border-left: 6px solid #ffb74d;
@@ -182,32 +188,83 @@
             border-left: 6px solid #ba68c8;
         }
         
+        /* 卡片标题和内部元素颜色 */
+        .knowledge-card.ancient-chinese h3 {
+            color: #81c784;
+        }
+        
+        .knowledge-card.ancient-chinese-military h3 {
+            color: #4db6ac;
+        }
+        
+        .knowledge-card.ancient-roman h3 {
+            color: #ffb74d;
+        }
+        
+        .knowledge-card.medieval h3 {
+            color: #ba68c8;
+        }
+        
+        .knowledge-card.ancient-chinese h4 {
+            color: #81c784;
+        }
+        
+        .knowledge-card.ancient-chinese-military h4 {
+            color: #4db6ac;
+        }
+        
+        .knowledge-card.ancient-roman h4 {
+            color: #ffb74d;
+        }
+        
+        .knowledge-card.medieval h4 {
+            color: #ba68c8;
+        }
+        
         /* 匹配知识卡片的tip-box样式 */
         .knowledge-card.ancient-chinese .tip-box {
             background: rgba(129, 199, 132, 0.15);
             border-left: 5px solid #81c784;
         }
         
-        .knowledge-card.ancient-chinese .tip-box strong {
-            color: #81c784;
+
+        .knowledge-card.ancient-chinese-military .tip-box {
+            background: rgba(77, 182, 172, 0.15);
+            border-left: 5px solid #4db6ac;
         }
         
+
         .knowledge-card.ancient-roman .tip-box {
             background: rgba(255, 183, 77, 0.15);
             border-left: 5px solid #ffb74d;
         }
         
-        .knowledge-card.ancient-roman .tip-box strong {
-            color: #ffb74d;
-        }
-        
+
         .knowledge-card.medieval .tip-box {
             background: rgba(186, 104, 200, 0.15);
             border-left: 5px solid #ba68c8;
         }
         
-        .knowledge-card.medieval .tip-box strong {
-            color: #ba68c8;
+
+        /* 优化blockquote样式 */
+        .knowledge-card.ancient-chinese blockquote {
+            background: rgba(129, 199, 132, 0.1);
+            border-left: 4px solid #81c784;
+        }
+        
+        .knowledge-card.ancient-chinese-military blockquote {
+            background: rgba(77, 182, 172, 0.1);
+            border-left: 4px solid #4db6ac;
+        }
+        
+        .knowledge-card.ancient-roman blockquote {
+            background: rgba(255, 183, 77, 0.1);
+            border-left: 4px solid #ffb74d;
+        }
+        
+        .knowledge-card.medieval blockquote {
+            background: rgba(186, 104, 200, 0.1);
+            border-left: 4px solid #ba68c8;
         }
         
         /* 可折叠档案学应用样式 */
@@ -233,6 +290,11 @@
             color: #81c784;
         }
         
+        .knowledge-card.ancient-chinese-military .archive-application-header {
+            background: rgba(77, 182, 172, 0.15);
+            color: #4db6ac;
+        }
+        
         .knowledge-card.ancient-roman .archive-application-header {
             background: rgba(255, 183, 77, 0.15);
             color: #ffb74d;
@@ -249,6 +311,10 @@
         
         .knowledge-card.ancient-chinese .archive-application-header:hover {
             background: rgba(129, 199, 132, 0.25);
+        }
+        
+        .knowledge-card.ancient-chinese-military .archive-application-header:hover {
+            background: rgba(77, 182, 172, 0.25);
         }
         
         .knowledge-card.ancient-roman .archive-application-header:hover {
@@ -309,7 +375,7 @@
         
         /* 优化强调文本样式 */
         .knowledge-card strong {
-            color: #0d47a1;
+            color: #000;
             font-weight: 600;
         }
         
@@ -670,7 +736,7 @@
         }
         
         .tip-box strong {
-            color: var(--secondary-color);
+            color: #000;
         }
         
         /* 密码转盘 */
@@ -1482,8 +1548,43 @@
             <div class="card">
                 <h2 class="section-title"><i class="fas fa-history"></i> 古代加密术</h2>
                 
-                <!-- 姜子牙的阴符阴书 -->
+                <!-- 藏头诗介绍 -->
                 <div class="knowledge-card ancient-chinese" style="margin-bottom: 25px;">
+                    <h3><i class="fas fa-pen-fancy"></i> 文学中的“藏头诗”</h3>
+                    <p>藏头诗是中国古代文学中一种特殊的加密文学形式，通过在诗句中隐藏特定信息来实现秘密传递。它巧妙地将加密技术融入文学创作，成为古代文人墨客喜爱的文字游戏和秘密通信方式。</p>
+                    
+                    <h4 style="margin-top: 15px; margin-bottom: 10px; color: var(--ancient-color);">藏头诗的主要形式</h4>
+                    <ul>
+                        <li><strong>首字藏头：</strong>最常见形式，每句首字连读表意</li>
+                        <li><strong>嵌字藏头：</strong>字隐藏在句中固定位置（如每句第二字）</li>
+                        <li><strong>倒藏诗：</strong>从末尾倒读成文</li>
+                        <li><strong>连环藏：</strong>诗句首尾字相连成环</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 15px; margin-bottom: 10px; color: var(--ancient-color);">经典例子：《水浒传》吴用题卢俊义宅诗</h4>
+                    <p>梁山军师吴用为诱卢俊义上山，在其家题壁：</p>
+                    <blockquote style="background: rgba(129, 199, 132, 0.1); border-left: 4px solid #81c784; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0;">
+                        <p style="margin: 0 0 8px 0; line-height: 1.6;">芦花丛里一扁舟，俊杰俄从此地游。</p>
+                        <p style="margin: 0 0 8px 0; line-height: 1.6;">义士若能知此理，反躬逃难可无忧。</p>
+                        <p style="margin: 10px 0 0 0; font-style: italic; color: #666;">（藏头：芦俊义反）</p>
+                    </blockquote>
+                    <p>此诗直接推动小说情节，是文学中藏头应用的典范，展示了古代文人如何通过文学形式传递秘密信息。</p>
+                    
+                    <div class="archive-application" onclick="toggleArchiveApplication(this)">
+                        <div class="archive-application-header">
+                            <span><i class="fas fa-archive"></i> 档案学应用</span>
+                            <i class="fas fa-chevron-down archive-application-arrow"></i>
+                        </div>
+                        <div class="archive-application-content">
+                            <div class="tip-box">
+                                <strong>档案学应用：</strong>藏头诗作为中国传统文字艺术，在档案文献中可能以“隐性信息”的方式存在，能够承载历史事件、人物关系或隐秘意图。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 姜子牙的阴符阴书 -->
+                <div class="knowledge-card ancient-chinese-military" style="margin-bottom: 25px;">
                     <h3><i class="fas fa-scroll"></i> 姜子牙的“阴符阴书”</h3>
                     <p>
                         《六韬·龙韬》记载，姜子牙为周武王设计了两套军情加密系统：
@@ -1491,7 +1592,7 @@
                     <h4 style="margin-top: 15px; margin-bottom: 10px; color: var(--ancient-color);">阴符体系</h4>
                     <p>
                         将竹符按长度分级（三寸至一尺），每级对应特定战况（如“三寸符”代表战败，“九寸符”象征全胜）。
-                        这种用预先约定的物理符号直接指代复杂信息的”符—意“映射方式，其核心思想与现代通信协议中的“指令集”或“信号编码”有相通之处，即通过一套双方共享的“密码本”来传递信息。。
+                        这种用预先约定的物理符号直接指代复杂信息的”符—意“映射方式，其核心思想与现代通信协议中的“指令集”或“信号编码”有相通之处，即通过一套双方共享的“密码本”来传递信息。
                     </p>
                     <h4 style="margin-top: 15px; margin-bottom: 10px; color: var(--ancient-color);">阴书方案</h4>
                     <p>
