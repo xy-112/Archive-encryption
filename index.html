@@ -16,38 +16,52 @@
         
         :root {
             --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #f39c12;
-            --light-color: #f5f0e6;
+            --secondary-color: #4a6fa5;
+            --accent-color: #f4a261;
+            --light-color: #f8f9fa;
             --dark-color: #1a2530;
-            --success-color: #27ae60;
-            --warning-color: #e74c3c;
-            --ancient-color: #d35400;
+            --success-color: #2ecc71;
+            --warning-color: #e76f51;
+            --ancient-color: #c19a6b;
             --modern-color: #27ae60;
+            --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            --nav-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
         }
         
         body {
-            background: linear-gradient(135deg, #f5f0e6 0%, #e8e2d6 100%);
-            color: #333;
+            background: var(--background-gradient);
+            color: var(--primary-color);
             min-height: 100vh;
-            padding: 20px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9f6f0"/><path d="M0 0L100 100M100 0L0 100" stroke="%23e0d8c8" stroke-width="0.5"/></svg>');
+            padding: 0;
+            margin: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="rgba(255,255,255,0.8)"/><path d="M0 0L100 100M100 0L0 100" stroke="rgba(0,0,0,0.05)" stroke-width="0.5"/></svg>');
+            background-attachment: fixed;
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            position: relative;
+            box-sizing: border-box;
         }
         
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             padding: 25px 20px;
             background: white;
-            border-radius: 15px;
+            border-radius: var(--border-radius);
             border-bottom: 4px solid var(--accent-color);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         h1 {
@@ -60,6 +74,7 @@
             font-size: 1.2rem;
             color: #7f8c8d;
             margin-bottom: 20px;
+            text-align: center;
         }
         
         .time-period {
@@ -73,47 +88,184 @@
             border: 1px solid rgba(52, 152, 219, 0.2);
         }
         
-        /* 标签页导航 */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
+        /* 导航栏切换按钮 */
+        .nav-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
             background: white;
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            width: auto;
+            min-width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            padding: 0 15px;
+            color: var(--primary-color);
         }
         
-        /* 移除固定导航栏的页面顶部间距 */
-        .container {
-            margin-top: 0;
+        .nav-toggle i {
+            margin-right: 8px;
+        }
+        
+        .nav-toggle:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        /* 垂直侧边导航栏 */
+        .sidebar-nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            box-shadow: var(--nav-shadow);
+            z-index: 1000;
+            transition: width 0.3s ease, transform 0.3s ease;
+            overflow-y: auto;
+            background-image: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            transform: translateX(-100%);
+        }
+        
+        .sidebar-nav.show {
+            transform: translateX(0);
+        }
+        
+
+        
+        /* 导航栏标题 */
+        .nav-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+
+        
+        .nav-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        /* 关闭按钮 */
+        .close-nav {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-nav:hover {
+            color: var(--warning-color);
+        }
+        
+
+        
+        .nav-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-item {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .nav-item:last-child {
+            border-bottom: none;
         }
         
         .tab-btn {
-            padding: 12px 25px;
+            width: 100%;
+            padding: 18px 20px;
             background: transparent;
             border: none;
             color: #666;
             font-size: 1rem;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
-            margin: 5px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            transition: all 0.3s;
+            text-align: left;
+            position: relative;
         }
+        
+
         
         .tab-btn:hover {
             background: rgba(52, 152, 219, 0.1);
             color: var(--secondary-color);
+            padding-left: 25px;
         }
         
         .tab-btn.active {
             background: var(--secondary-color);
             color: white;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+            padding-left: 25px;
+        }
+        
+        /* 内容遮罩 */
+        .content-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        /* 显示遮罩 */
+        .content-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 调整主内容区 */
+        .container {
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+        
+        /* 显示导航栏时调整主内容区 */
+        .sidebar-nav.show ~ .container {
+            margin-left: 0;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            /* 在小屏幕上，导航栏的行为已经由默认样式处理 */
+            .nav-toggle {
+                display: flex;
+            }
+        }
+        
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .sidebar-nav {
+                width: 100%;
+                max-width: 320px;
+            }
         }
         
         .tab-content {
@@ -128,18 +280,19 @@
         /* 卡片样式 */
         .card {
             background: white;
-            border-radius: 15px;
+            border-radius: var(--border-radius);
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s ease;
             max-width: 100%;
             box-sizing: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
         }
         
         .section-title {
@@ -159,32 +312,40 @@
         
         /* 知识点卡片 */
         .knowledge-card {
-            background: #e3f2fd;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: var(--border-radius);
             padding: 25px;
             margin-bottom: 25px;
-            border-left: 6px solid #2196f3;
+            border-left: 6px solid var(--secondary-color);
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .knowledge-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
         }
         
         /* 古代加密术卡片样式 */
         .knowledge-card.ancient-chinese {
-            background: #f8fff8;
+            background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
             border-left: 6px solid #81c784;
         }
         
         /* 姜子牙阴符阴书专用样式 */
         .knowledge-card.ancient-chinese-military {
-            background: #f0f8ff;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e3f2fd 100%);
             border-left: 6px solid #4db6ac;
         }
         
         .knowledge-card.ancient-roman {
-            background: #fffef8;
+            background: linear-gradient(135deg, #fffef8 0%, #fff8e1 100%);
             border-left: 6px solid #ffb74d;
         }
         
         .knowledge-card.medieval {
-            background: #fef8ff;
+            background: linear-gradient(135deg, #fef8ff 0%, #f3e5f5 100%);
             border-left: 6px solid #ba68c8;
         }
         
@@ -375,68 +536,181 @@
         
         /* 优化强调文本样式 */
         .knowledge-card strong {
-            color: #000;
-            font-weight: 600;
+            color: var(--primary-color);
+            font-weight: 700;
         }
         
         /* 优化代码样式 */
         .knowledge-card code {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 4px 8px;
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 6px 12px;
+            border-radius: 8px;
             font-family: 'Courier New', monospace;
             color: #d35400;
             font-weight: bold;
             font-size: 0.95em;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 优化标题样式 */
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+        }
+        
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 18px;
+            margin-top: 30px;
+        }
+        
+        h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+        
+        /* 优化段落样式 */
+        p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+        
+        /* 优化列表样式 */
+        ul, ol {
+            margin-bottom: 25px;
+            padding-left: 28px;
+        }
+        
+        li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        
+        /* 优化链接样式 */
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        a:hover {
+            color: #3a5a86;
+            text-decoration: underline;
+        }
+        
+        /* 优化对比表格样式 */
+        .comparison-table {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 18px;
+        }
+        
+        /* 优化挑战卡片样式 */
+        .challenge-card {
+            margin-bottom: 25px;
+        }
+        
+        /* 优化时间周期标签样式 */
+        .time-period {
+            margin: 8px 10px;
+            padding: 10px 20px;
+        }
+        
+        /* 优化输入组样式 */
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            margin-bottom: 10px;
         }
         
         /* 新增框图样式 */
         /* 核心特点框图 */
         .feature-box {
-            background: rgba(231, 245, 255, 0.8);
+            background: linear-gradient(135deg, rgba(231, 245, 255, 0.9) 0%, rgba(197, 227, 250, 0.9) 100%);
             border-left: 4px solid #90caf9;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            transform: translateX(5px);
         }
         
         /* 应用场景框图 */
         .scenario-box {
-            background: rgba(237, 247, 237, 0.8);
+            background: linear-gradient(135deg, rgba(237, 247, 237, 0.9) 0%, rgba(204, 232, 205, 0.9) 100%);
             border-left: 4px solid #a5d6a7;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .scenario-box:hover {
+            transform: translateX(5px);
         }
         
         /* 算法列表框图 */
         .algorithm-box {
-            background: rgba(255, 253, 231, 0.8);
+            background: linear-gradient(135deg, rgba(255, 253, 231, 0.9) 0%, rgba(255, 247, 188, 0.9) 100%);
             border-left: 4px solid #ffe082;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .algorithm-box:hover {
+            transform: translateX(5px);
         }
         
         /* 密钥对框图 */
         .key-pair-box {
-            background: rgba(243, 232, 245, 0.8);
+            background: linear-gradient(135deg, rgba(243, 232, 245, 0.9) 0%, rgba(222, 198, 224, 0.9) 100%);
             border-left: 4px solid #ce93d8;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .key-pair-box:hover {
+            transform: translateX(5px);
         }
         
         /* 框图装饰元素 */
@@ -540,126 +814,126 @@
         
         input, select, textarea {
             width: 100%;
-            padding: 14px;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            color: #333;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            color: var(--primary-color);
             font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-            font-family: inherit;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-            background: white;
-        }
-        
-        /* 按钮样式 */
-        .btn {
-            padding: 14px 24px;
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-accent {
-            background: var(--accent-color);
-        }
-        
-        .btn-accent:hover {
-            background: #e67e22;
-        }
-        
-        .btn-success {
-            background: var(--success-color);
-        }
-        
-        .btn-success:hover {
-            background: #219653;
-        }
-        
-        /* 输出区域 */
-        .output-box {
-            background: #f8f9fa;
-            border: 2px dashed #ccc;
-            padding: 20px;
-            margin-top: 10px;
-            min-height: 80px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            word-break: break-all;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
         }
         
         textarea {
             min-height: 120px;
             resize: vertical;
             font-family: inherit;
-            padding: 15px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        
-        input, select, textarea {
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            color: #333;
-            transition: all 0.3s;
         }
         
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 0 0 4px rgba(74, 111, 165, 0.2);
             background: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #3a5a86 100%);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #3a5a86 0%, var(--secondary-color) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #e67e22 100%);
+        }
+        
+        .btn-accent:hover {
+            background: linear-gradient(135deg, #e67e22 0%, var(--accent-color) 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #27ae60 100%);
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #27ae60 0%, var(--success-color) 100%);
+        }
+        
+        /* 输出区域 */
+        .output-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px dashed var(--secondary-color);
+            padding: 20px;
+            margin-top: 15px;
+            min-height: 100px;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .output-box:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+            box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         
         .output-box.encrypted {
-            border-color: var(--modern-color);
-            background: rgba(39, 174, 96, 0.05);
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(39, 174, 96, 0.05) 100%);
+            border-color: var(--success-color);
         }
         
         .output-box.decrypted {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.05) 100%);
             border-color: var(--secondary-color);
-            background: rgba(52, 152, 219, 0.05);
         }
+        
+
         
         /* 提示框 */
         .tip-box {
-            background: #e8f4fc;
-            padding: 16px;
+            background: linear-gradient(135deg, #e8f4fc 0%, #d0e8fa 100%);
+            padding: 20px;
             border-left: 5px solid var(--secondary-color);
             margin-top: 25px;
             font-size: 1rem;
-            border-radius: 0 8px 8px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
             line-height: 1.6;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .tip-box:hover {
+            transform: translateX(5px);
         }
         
         /* 折叠面板样式 */
@@ -678,7 +952,7 @@
         }
         
         .accordion-header {
-            background: var(--primary-color);
+            background: var(--secondary-color);
             color: white;
             padding: 16px 20px;
             cursor: pointer;
@@ -689,13 +963,15 @@
         }
         
         .accordion-header:hover {
-            background: #34495e;
+            background: var(--accent-color);
         }
         
         .accordion-header h3 {
             margin: 0;
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
         .accordion-icon {
@@ -1513,6 +1789,67 @@
     </style>
 </head>
 <body>
+    <!-- 导航栏切换按钮 -->
+    <div class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+        <span>菜单</span>
+    </div>
+    
+    <!-- 垂直侧边导航栏 -->
+    <div class="sidebar-nav" id="sidebarNav">
+        <div class="nav-header">
+            <h3>导航菜单</h3>
+            <div style="display: flex; gap: 10px;">
+                <button class="close-nav" id="closeNav">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li class="nav-item">
+                    <button class="tab-btn active" data-tab="caesar">
+                        <i class="fas fa-scroll"></i>
+                        <span>古代加密术</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="tab-btn" data-tab="introduction">
+                        <i class="fas fa-info-circle"></i>
+                        <span>对称加密</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="tab-btn" data-tab="aes">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>AES加密</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="tab-btn" data-tab="asymmetric">
+                        <i class="fas fa-key"></i>
+                        <span>非对称加密</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="tab-btn" data-tab="hash">
+                        <i class="fas fa-calculator"></i>
+                        <span>哈希函数</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="tab-btn" data-tab="challenge">
+                        <i class="fas fa-trophy"></i>
+                        <span>加密挑战</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
+    <!-- 内容遮罩 -->
+    <div class="content-overlay" id="contentOverlay"></div>
+    
     <div class="container">
         <header>
             <h1><i class="fas fa-lock"></i> 档案加密技术体验馆</h1>
@@ -1523,25 +1860,6 @@
                 <span class="time-period"><i class="fas fa-graduation-cap"></i> 教学互动</span>
             </div>
         </header>
-        
-        <!-- 标签页导航 -->
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="caesar">
-                <i class="fas fa-scroll"></i> 古代加密术
-            </button>
-            <button class="tab-btn" data-tab="introduction">
-                <i class="fas fa-info-circle"></i> 对称加密
-            </button>
-            <button class="tab-btn" data-tab="aes">
-                <i class="fas fa-shield-alt"></i> AES加密
-            </button>
-            <button class="tab-btn" data-tab="asymmetric">
-                <i class="fas fa-key"></i> 非对称加密
-            </button>
-            <button class="tab-btn" data-tab="challenge">
-                <i class="fas fa-trophy"></i> 加密挑战
-            </button>
-        </div>
         
         <!-- 古代加密术部分 -->
         <div id="caesar" class="tab-content active">
@@ -1688,14 +2006,13 @@
                 </div>
             </div>
             
-            <div class="tip-box" style="background: rgba(231, 76, 60, 0.05); border-left-color: var(--warning-color);">
-                ⚠️ <strong>注意：</strong>实际应用中应在服务器端加密，前端加密仅用于演示
-            </div>
-            
             <!-- 返回导航栏按钮 -->
-            <div class="back-to-nav">
-                <button class="back-to-nav-btn" onclick="scrollToNavigation()">
-                    <i class="fas fa-arrow-up"></i> 浏览其他内容
+            <div class="back-to-nav" style="gap: 15px; display: flex; justify-content: center;">
+                <button class="back-to-nav-btn" onclick="scrollToTop()">
+                    <i class="fas fa-arrow-up"></i> 返回顶部
+                </button>
+                <button class="back-to-nav-btn" onclick="goToNextTab()">
+                    <i class="fas fa-arrow-right"></i> 前往下一页
                 </button>
             </div>
         </div>
@@ -1790,9 +2107,12 @@
             </div>
             
             <!-- 返回导航栏按钮 -->
-            <div class="back-to-nav">
-                <button class="back-to-nav-btn" onclick="scrollToNavigation()">
-                    <i class="fas fa-arrow-up"></i> 浏览其他内容
+            <div class="back-to-nav" style="gap: 15px; display: flex; justify-content: center;">
+                <button class="back-to-nav-btn" onclick="scrollToTop()">
+                    <i class="fas fa-arrow-up"></i> 返回顶部
+                </button>
+                <button class="back-to-nav-btn" onclick="goToNextTab()">
+                    <i class="fas fa-arrow-right"></i> 前往下一页
                 </button>
             </div>
         </div>
@@ -2028,9 +2348,12 @@
             </div>
             
             <!-- 返回导航栏按钮 -->
-            <div class="back-to-nav">
-                <button class="back-to-nav-btn" onclick="scrollToNavigation()">
-                    <i class="fas fa-arrow-up"></i> 浏览其他内容
+            <div class="back-to-nav" style="gap: 15px; display: flex; justify-content: center;">
+                <button class="back-to-nav-btn" onclick="scrollToTop()">
+                    <i class="fas fa-arrow-up"></i> 返回顶部
+                </button>
+                <button class="back-to-nav-btn" onclick="goToNextTab()">
+                    <i class="fas fa-arrow-right"></i> 前往下一页
                 </button>
             </div>
         </div>
@@ -2207,9 +2530,197 @@
             </div>
             
             <!-- 返回导航栏按钮 -->
-            <div class="back-to-nav">
-                <button class="back-to-nav-btn" onclick="scrollToNavigation()">
-                    <i class="fas fa-arrow-up"></i> 浏览其他内容
+            <div class="back-to-nav" style="gap: 15px; display: flex; justify-content: center;">
+                <button class="back-to-nav-btn" onclick="scrollToTop()">
+                    <i class="fas fa-arrow-up"></i> 返回顶部
+                </button>
+                <button class="back-to-nav-btn" onclick="goToNextTab()">
+                    <i class="fas fa-arrow-right"></i> 前往下一页
+                </button>
+            </div>
+        </div>
+        
+        <!-- 哈希函数部分 -->
+        <div id="hash" class="tab-content">
+            <div class="knowledge-card">
+                <h2><i class="fas fa-calculator"></i> 什么是哈希函数？</h2>
+                <p>
+                    <strong>哈希函数</strong>（Hash Function）是一种将任意长度的输入数据转换为固定长度输出的函数。这个输出值称为<strong>哈希值</strong>、<strong>散列值</strong>或<strong>摘要</strong>。
+                </p>
+                
+                <!-- 核心特点框图 -->
+                <div class="feature-box">
+                    <span class="box-title">核心特点：</span>
+                    <ul>
+                        <li><strong>单向性</strong>：从输入到输出容易计算，但从输出到输入几乎不可能逆向推导</li>
+                        <li><strong>固定输出长度</strong>：无论输入数据大小，输出总是固定长度</li>
+                        <li><strong>抗碰撞性</strong>：很难找到两个不同的输入产生相同的输出</li>
+                        <li><strong>雪崩效应</strong>：输入的微小变化会导致输出的巨大变化</li>
+                    </ul>
+                </div>
+                
+                <!-- 常见算法框图 -->
+                <div class="algorithm-box">
+                    <span class="box-title">常见算法：</span>
+                    <p>
+                        常见的哈希函数算法包括：
+                        <code>MD5</code>（已被证明不安全，不建议使用）、
+                        <code>SHA-1</code>（安全性降低，逐步被淘汰）、
+                        <code>SHA-256</code>（广泛使用，安全性高）、
+                        <code>SHA-3</code>（最新标准，抗量子计算攻击）、
+                        <code>CRC32</code>（主要用于数据校验，安全性较低）
+                    </p>
+                </div>
+                
+                <!-- 应用场景框图 -->
+                <div class="scenario-box">
+                    <span class="box-title">应用场景：</span>
+                    <p>
+                        <strong>数据完整性验证</strong>：通过比较哈希值来检查数据是否被篡改
+                    </p>
+                    <p>
+                        <strong>数字签名</strong>：结合非对称加密，用于验证文件的真实性和完整性
+                    </p>
+                    <p>
+                        <strong>密码存储</strong>：存储密码的哈希值而非明文，提高安全性
+                    </p>
+                    <p>
+                        <strong>数据索引</strong>：用于快速查找和定位数据，如哈希表
+                    </p>
+                    <p>
+                        <strong>区块链技术</strong>：用于生成区块哈希，确保区块链的完整性和不可篡改性
+                    </p>
+                    <p>
+                        <strong>数字指纹</strong>：为文件生成唯一标识，用于版权保护和文件比对
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 哈希值生成器 - 独立卡片 -->
+            <div class="card" style="margin-top: 30px;">
+                <div class="encryption-header" style="padding-bottom: 15px; margin-bottom: 20px; border-bottom: 2px solid rgba(243, 156, 18, 0.2);">
+                    <i class="fas fa-play-circle" style="color: var(--accent-color); font-size: 1.5rem;"></i>
+                    <h3 style="color: var(--primary-color); margin: 0; font-size: 1.5rem;">哈希值生成器</h3>
+                </div>
+                <div class="encryption-content">
+                    <div class="input-group">
+                        <label for="hashInput">输入要计算哈希值的文本：</label>
+                        <textarea id="hashInput" placeholder="请输入任意文本...">Hello World</textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="hashAlgorithm">选择哈希算法：</label>
+                        <select id="hashAlgorithm">
+                            <option value="md5">MD5</option>
+                            <option value="sha1">SHA-1</option>
+                            <option value="sha256" selected>SHA-256</option>
+                            <option value="sha512">SHA-512</option>
+                            <option value="sha3">SHA-3</option>
+                        </select>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn" onclick="generateHash()">
+                            <i class="fas fa-calculator"></i> 生成哈希值
+                        </button>
+                        <button class="btn btn-success" onclick="clearHashInput()">
+                            <i class="fas fa-eraser"></i> 清空
+                        </button>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="hashOutput">生成的哈希值：</label>
+                        <div class="output-box" id="hashOutput" style="word-break: break-all; font-family: 'Courier New', monospace;"></div>
+                        <button class="copy-btn" onclick="copyToClipboard('hashOutput', this)">
+                            <i class="far fa-copy"></i> 复制哈希值
+                        </button>
+                    </div>
+                    
+                    <div class="tip-box" style="margin-top: 20px;">
+                        💡 <strong>观察要点：</strong>
+                        <div style="margin-top: 10px;">
+                            <p style="margin: 8px 0;">无论输入多长，输出都是固定长度</p>
+                            <p style="margin: 8px 0;">输入的微小变化会导致输出的巨大变化（雪崩效应）</p>
+                            <p style="margin: 8px 0;">尝试输入相同的文本，结果总是一样的</p>
+                            <p style="margin: 8px 0;">无法从哈希值逆向推导出原始文本</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="section-title"><i class="fas fa-balance-scale"></i> 对称加密、非对称加密与哈希函数对比</h2>
+                <table class="comparison-table">
+                    <tr>
+                        <th>对比维度</th>
+                        <th><span class="modern">对称加密</span></th>
+                        <th><span class="modern">非对称加密</span></th>
+                        <th><span class="modern">哈希函数</span></th>
+                    </tr>
+                    <tr>
+                        <td>核心功能</td>
+                        <td>加密解密数据</td>
+                        <td>加密解密数据、数字签名</td>
+                        <td>生成数据摘要、验证完整性</td>
+                    </tr>
+                    <tr>
+                        <td>密钥数量</td>
+                        <td>单密钥（加密解密共用）</td>
+                        <td>双密钥（公钥+私钥）</td>
+                        <td>无需密钥</td>
+                    </tr>
+                    <tr>
+                        <td>可逆性</td>
+                        <td>可逆（可解密）</td>
+                        <td>可逆（可解密）</td>
+                        <td>单向（不可逆）</td>
+                    </tr>
+                    <tr>
+                        <td>输出长度</td>
+                        <td>可变（与输入长度相关）</td>
+                        <td>可变（与输入长度相关）</td>
+                        <td>固定长度</td>
+                    </tr>
+                    <tr>
+                        <td>典型算法</td>
+                        <td>AES、DES、3DES</td>
+                        <td>RSA、ECC、Diffie-Hellman</td>
+                        <td>SHA-256、SHA-3、MD5</td>
+                    </tr>
+                    <tr>
+                        <td>主要应用</td>
+                        <td>文件加密、数据库加密、AES</td>
+                        <td>数字签名、密钥交换、TLS/SSL</td>
+                        <td>数据完整性验证、密码存储、区块链</td>
+                    </tr>
+                    <tr>
+                        <td>档案管理应用</td>
+                        <td>电子档案存储加密</td>
+                        <td>档案数字签名、身份验证</td>
+                        <td>档案完整性验证、数字指纹</td>
+                    </tr>
+                </table>
+                
+                <div class="tip-box">
+                    💡 <strong>启示：</strong>在实际应用中，这三种技术常常结合使用。
+                    <ul>
+                    例如：用哈希函数生成文件摘要，再用非对称加密对摘要进行签名，最后用对称加密加密文件内容这种组合既保证了数据的机密性，又确保了数据的完整性和真实性</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tip-box" style="background: rgba(231, 76, 60, 0.05); border-left: 4px solid var(--warning-color); margin-top: 20px;">
+                <i class="fas fa-exclamation-triangle" style="color: var(--warning-color); margin-right: 8px;"></i>
+                <strong style="color: var(--warning-color);">注意:</strong> 选择合适的哈希函数时，应考虑安全性、性能和应用场景，避免使用已被证明不安全的算法
+            </div>
+            
+            <!-- 返回导航栏按钮 -->
+            <div class="back-to-nav" style="gap: 15px; display: flex; justify-content: center;">
+                <button class="back-to-nav-btn" onclick="scrollToTop()">
+                    <i class="fas fa-arrow-up"></i> 返回顶部
+                </button>
+                <button class="back-to-nav-btn" onclick="goToNextTab()">
+                    <i class="fas fa-arrow-right"></i> 前往下一页
                 </button>
             </div>
         </div>
@@ -2287,6 +2798,16 @@
                 
 
             </div>
+            
+            <!-- 返回导航栏按钮 -->
+            <div class="back-to-nav" style="gap: 15px; display: flex; justify-content: center;">
+                <button class="back-to-nav-btn" onclick="scrollToTop()">
+                    <i class="fas fa-arrow-up"></i> 返回顶部
+                </button>
+                <button class="back-to-nav-btn" onclick="goToPrevTab()">
+                    <i class="fas fa-arrow-left"></i> 回到上一页
+                </button>
+            </div>
         </div>
         
         <footer class="footer">
@@ -2314,7 +2835,57 @@
             
             // 初始化折叠面板
             initAccordion();
+            
+            // 初始化侧边导航栏
+            initSidebarNav();
         });
+        
+        // 初始化侧边导航栏
+        function initSidebarNav() {
+            const navToggle = document.getElementById('navToggle');
+            const closeNav = document.getElementById('closeNav');
+            const sidebarNav = document.getElementById('sidebarNav');
+            const contentOverlay = document.getElementById('contentOverlay');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            // 打开导航栏
+            navToggle.addEventListener('click', function() {
+                sidebarNav.classList.add('show');
+                contentOverlay.classList.add('show');
+                navToggle.style.display = 'none'; // 隐藏菜单按钮
+            });
+            
+            // 关闭导航栏
+            function closeSidebar() {
+                sidebarNav.classList.remove('show');
+                contentOverlay.classList.remove('show');
+                navToggle.style.display = 'flex'; // 显示菜单按钮
+            }
+            
+            closeNav.addEventListener('click', closeSidebar);
+            
+            // 点击遮罩关闭导航栏
+            contentOverlay.addEventListener('click', closeSidebar);
+            
+            // 点击导航项处理
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    closeSidebar();
+                    // 平滑滚动到页面顶部
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // ESC键关闭导航栏
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && sidebarNav.classList.contains('show')) {
+                    closeSidebar();
+                }
+            });
+        }
         
         // 切换档案学应用的折叠状态
         function toggleArchiveApplication(element) {
@@ -2343,6 +2914,46 @@
                     block: 'start'
                 });
             }
+        }
+        
+        // 切换到下一个标签页
+        function goToNextTab() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const activeBtn = document.querySelector('.tab-btn.active');
+            let nextIndex = Array.from(tabBtns).indexOf(activeBtn) + 1;
+            
+            if (nextIndex < tabBtns.length) {
+                tabBtns[nextIndex].click();
+                // 切换标签页后滚动到页面顶部
+                window.scrollTo({ 
+                    top: 0, 
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        // 切换到上一个标签页
+        function goToPrevTab() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const activeBtn = document.querySelector('.tab-btn.active');
+            let prevIndex = Array.from(tabBtns).indexOf(activeBtn) - 1;
+            
+            if (prevIndex >= 0) {
+                tabBtns[prevIndex].click();
+                // 切换标签页后滚动到页面顶部
+                window.scrollTo({ 
+                    top: 0, 
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        // 滚动到页面顶部
+        function scrollToTop() {
+            window.scrollTo({ 
+                top: 0, 
+                behavior: 'smooth'
+            });
         }
         
         // 标签页切换功能
@@ -2691,6 +3302,60 @@
             }
         }
         
+        // 哈希值生成函数
+        function generateHash() {
+            const text = document.getElementById('hashInput').value;
+            const algorithm = document.getElementById('hashAlgorithm').value;
+            const outputDiv = document.getElementById('hashOutput');
+            
+            if (!text) {
+                showNotification('请输入要计算哈希值的文本！', 'error');
+                return;
+            }
+            
+            let hashValue;
+            try {
+                switch (algorithm) {
+                    case 'md5':
+                        hashValue = CryptoJS.MD5(text).toString();
+                        break;
+                    case 'sha1':
+                        hashValue = CryptoJS.SHA1(text).toString();
+                        break;
+                    case 'sha256':
+                        hashValue = CryptoJS.SHA256(text).toString();
+                        break;
+                    case 'sha512':
+                        hashValue = CryptoJS.SHA512(text).toString();
+                        break;
+                    case 'sha3':
+                        hashValue = CryptoJS.SHA3(text).toString();
+                        break;
+                    default:
+                        hashValue = CryptoJS.SHA256(text).toString();
+                }
+                
+                outputDiv.textContent = hashValue;
+                outputDiv.classList.add('encrypted');
+                outputDiv.classList.add('highlight');
+                setTimeout(() => outputDiv.classList.remove('highlight'), 1000);
+                
+                showNotification('哈希值生成成功！', 'success');
+            } catch (e) {
+                outputDiv.textContent = '生成哈希值出错：' + e.message;
+                showNotification('生成哈希值出错！', 'error');
+                console.error('哈希生成错误:', e);
+            }
+        }
+        
+        // 清空哈希输入和输出
+        function clearHashInput() {
+            document.getElementById('hashInput').value = '';
+            document.getElementById('hashOutput').textContent = '';
+            document.getElementById('hashAlgorithm').value = 'sha256';
+            showNotification('已清空输入和输出！', 'success');
+        }
+        
         // 复制到剪贴板功能
         function copyToClipboard(textOrElementId, button) {
             let text;
@@ -2836,5 +3501,6 @@
             }
         }
     </script>
+    </div>
 </body>
 </html>
