@@ -2893,8 +2893,12 @@
         function initNavToggleDrag() {
             const navToggle = document.getElementById('navToggle');
             let isDragging = false;
+            let startX = 0;
+            let startY = 0;
             let offsetX = 0;
             let offsetY = 0;
+            const DRAG_THRESHOLD = 5; // 拖拽阈值，像素
+            let isClick = true; // 判断是否为点击事件
             
             // 获取元素的位置信息
             function getElementPosition(element) {
@@ -2922,51 +2926,74 @@
             // 开始拖拽
             function startDrag(e) {
                 // 只有左键点击才触发拖拽
-                if (e.button === 2) return; // 排除右键
+                if (e.type === 'mousedown' && e.button !== 0) return; // 排除右键
                 
-                isDragging = true;
+                isClick = true;
+                isDragging = false;
                 
                 // 获取元素当前位置
                 const pos = getElementPosition(navToggle);
                 const coords = getTouchCoordinates(e);
                 
-                // 计算鼠标/触摸点与按钮左上角的距离
+                // 记录起始位置和偏移量
+                startX = coords.x;
+                startY = coords.y;
                 offsetX = coords.x - pos.left;
                 offsetY = coords.y - pos.top;
                 
-                // 添加拖拽时的样式
-                navToggle.style.transition = 'none';
-                navToggle.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
-                navToggle.style.zIndex = '1200'; // 确保拖拽时在最上层
-                
                 // 防止默认行为
-                e.preventDefault();
+                if (e.type === 'touchstart') {
+                    e.preventDefault();
+                }
             }
             
             // 拖拽中
             function drag(e) {
-                if (!isDragging) return;
+                if (!isDragging) {
+                    const coords = getTouchCoordinates(e);
+                    
+                    // 计算拖拽距离
+                    const deltaX = Math.abs(coords.x - startX);
+                    const deltaY = Math.abs(coords.y - startY);
+                    
+                    // 如果拖拽距离超过阈值，判断为拖拽事件
+                    if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
+                        isDragging = true;
+                        isClick = false;
+                    } else {
+                        // 如果没有超过阈值，不处理
+                        return;
+                    }
+                }
                 
-                const coords = getTouchCoordinates(e);
-                
-                // 计算新的位置
-                let newLeft = coords.x - offsetX;
-                let newTop = coords.y - offsetY;
-                
-                // 获取视口尺寸，考虑滚动条
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                
-                // 限制在可视区域内，考虑按钮本身的尺寸
-                newLeft = Math.max(10, Math.min(newLeft, viewportWidth - navToggle.offsetWidth - 10));
-                newTop = Math.max(10, Math.min(newTop, viewportHeight - navToggle.offsetHeight - 10));
-                
-                // 更新位置
-                navToggle.style.left = newLeft + 'px';
-                navToggle.style.top = newTop + 'px';
-                
-                // 防止默认行为
-                e.preventDefault();
+                // 只有确认是拖拽事件才执行后续逻辑
+                if (isDragging) {
+                    const coords = getTouchCoordinates(e);
+                    
+                    // 添加拖拽时的样式
+                    navToggle.style.transition = 'none';
+                    navToggle.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+                    navToggle.style.zIndex = '1200'; // 确保拖拽时在最上层
+                    
+                    // 计算新的位置
+                    let newLeft = coords.x - offsetX;
+                    let newTop = coords.y - offsetY;
+                    
+                    // 获取视口尺寸，考虑滚动条
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    
+                    // 限制在可视区域内，考虑按钮本身的尺寸
+                    newLeft = Math.max(10, Math.min(newLeft, viewportWidth - navToggle.offsetWidth - 10));
+                    newTop = Math.max(10, Math.min(newTop, viewportHeight - navToggle.offsetHeight - 10));
+                    
+                    // 更新位置
+                    navToggle.style.left = newLeft + 'px';
+                    navToggle.style.top = newTop + 'px';
+                    
+                    // 防止默认行为
+                    e.preventDefault();
+                }
             }
             
             // 结束拖拽
@@ -2981,16 +3008,16 @@
             }
             
             // 鼠标事件支持
-            navToggle.addEventListener('mousedown', startDrag, { passive: false });
-            document.addEventListener('mousemove', drag, { passive: false });
+            navToggle.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', drag);
             document.addEventListener('mouseup', endDrag);
             document.addEventListener('mouseleave', endDrag); // 防止鼠标移出窗口时无法结束拖拽
             
             // 触摸事件支持
             navToggle.addEventListener('touchstart', startDrag, { passive: false });
             document.addEventListener('touchmove', drag, { passive: false });
-            document.addEventListener('touchend', endDrag);
-            document.addEventListener('touchcancel', endDrag); // 防止触摸被中断时无法结束拖拽
+            document.addEventListener('touchend', endDrag, { passive: false });
+            document.addEventListener('touchcancel', endDrag, { passive: true }); // 防止触摸被中断时无法结束拖拽
             
             // 确保在不同设备上的兼容性
             navToggle.style.transform = 'translateZ(0)'; // 启用GPU加速，提高拖拽流畅度
