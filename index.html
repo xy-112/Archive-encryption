@@ -3572,6 +3572,9 @@
         function initNavToggleDrag() {
             const navToggle = document.getElementById('navToggle');
             let isDragging = false;
+            let isTouching = false;
+            let hasMoved = false;
+            let startX, startY;
             let offsetX, offsetY;
             
             // 鼠标按下事件 - 开始拖拽
@@ -3624,45 +3627,62 @@
             
             // 触摸事件支持 - 适配移动设备
             navToggle.addEventListener('touchstart', (e) => {
-                isDragging = true;
-                navToggle.classList.add('dragging');
-                
+                isTouching = true;
+                hasMoved = false;
                 const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                
+                // 计算触摸相对于按钮的偏移量
                 const rect = navToggle.getBoundingClientRect();
                 offsetX = touch.clientX - rect.left;
                 offsetY = touch.clientY - rect.top;
-                
-                e.preventDefault();
             });
             
             document.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
+                if (!isTouching) return;
                 
                 const touch = e.touches[0];
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                const buttonWidth = navToggle.offsetWidth;
-                const buttonHeight = navToggle.offsetHeight;
+                const deltaX = Math.abs(touch.clientX - startX);
+                const deltaY = Math.abs(touch.clientY - startY);
                 
-                let newX = touch.clientX - offsetX;
-                let newY = touch.clientY - offsetY;
-                
-                // 限制在视口内
-                newX = Math.max(0, Math.min(newX, viewportWidth - buttonWidth));
-                newY = Math.max(0, Math.min(newY, viewportHeight - buttonHeight));
-                
-                // 更新位置
-                navToggle.style.left = `${newX}px`;
-                navToggle.style.right = 'auto';
-                navToggle.style.top = `${newY}px`;
-                
-                e.preventDefault();
+                // 判断是否为拖拽操作（移动距离超过5px视为拖拽）
+                if (deltaX > 5 || deltaY > 5) {
+                    if (!hasMoved) {
+                        hasMoved = true;
+                        isDragging = true;
+                        navToggle.classList.add('dragging');
+                    }
+                    
+                    // 计算新位置，确保按钮不会超出视口
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    const buttonWidth = navToggle.offsetWidth;
+                    const buttonHeight = navToggle.offsetHeight;
+                    
+                    let newX = touch.clientX - offsetX;
+                    let newY = touch.clientY - offsetY;
+                    
+                    // 限制在视口内
+                    newX = Math.max(0, Math.min(newX, viewportWidth - buttonWidth));
+                    newY = Math.max(0, Math.min(newY, viewportHeight - buttonHeight));
+                    
+                    // 更新位置
+                    navToggle.style.left = `${newX}px`;
+                    navToggle.style.right = 'auto';
+                    navToggle.style.top = `${newY}px`;
+                    
+                    e.preventDefault();
+                }
             });
             
             document.addEventListener('touchend', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    navToggle.classList.remove('dragging');
+                if (isTouching) {
+                    isTouching = false;
+                    if (isDragging) {
+                        isDragging = false;
+                        navToggle.classList.remove('dragging');
+                    }
                 }
             });
         }
