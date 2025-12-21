@@ -2941,10 +2941,7 @@
                 offsetX = coords.x - pos.left;
                 offsetY = coords.y - pos.top;
                 
-                // 防止默认行为
-                if (e.type === 'touchstart') {
-                    e.preventDefault();
-                }
+                // 不阻止touchstart的默认行为，否则会阻止后续的click事件
             }
             
             // 拖拽中
@@ -2960,6 +2957,9 @@
                     if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
                         isDragging = true;
                         isClick = false;
+                        
+                        // 只有确认是拖拽事件才阻止默认行为
+                        e.preventDefault();
                     } else {
                         // 如果没有超过阈值，不处理
                         return;
@@ -3014,9 +3014,9 @@
             document.addEventListener('mouseleave', endDrag); // 防止鼠标移出窗口时无法结束拖拽
             
             // 触摸事件支持
-            navToggle.addEventListener('touchstart', startDrag, { passive: false });
+            navToggle.addEventListener('touchstart', startDrag, { passive: true });
             document.addEventListener('touchmove', drag, { passive: false });
-            document.addEventListener('touchend', endDrag, { passive: false });
+            document.addEventListener('touchend', endDrag, { passive: true });
             document.addEventListener('touchcancel', endDrag, { passive: true }); // 防止触摸被中断时无法结束拖拽
             
             // 确保在不同设备上的兼容性
