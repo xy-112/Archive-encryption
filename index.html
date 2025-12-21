@@ -111,11 +111,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
+            cursor: grab;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
             padding: 0 15px;
             color: var(--primary-color);
+            user-select: none;
+        }
+        
+        .nav-toggle:active {
+            cursor: grabbing;
         }
         
         .nav-toggle i {
@@ -1358,8 +1363,8 @@
             background: #f8f9fa;
             border-radius: 8px;
             box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-            margin-left: 20px;
-            margin-right: 20px;
+            margin-left: 30px;
+            margin-right: 30px;
         }
         
         .footer p {
@@ -2879,7 +2884,90 @@
             
             // 初始化侧边导航栏
             initSidebarNav();
+            
+            // 初始化菜单按钮拖拽功能
+            initNavToggleDrag();
         });
+        
+        // 初始化菜单按钮拖拽功能
+        function initNavToggleDrag() {
+            const navToggle = document.getElementById('navToggle');
+            let isDragging = false;
+            let offsetX, offsetY;
+            
+            // 鼠标按下事件
+            navToggle.addEventListener('mousedown', function(e) {
+                // 只有左键点击才触发拖拽
+                if (e.button !== 0) return;
+                
+                isDragging = true;
+                // 计算鼠标与按钮左上角的距离
+                offsetX = e.clientX - parseInt(window.getComputedStyle(navToggle).left);
+                offsetY = e.clientY - parseInt(window.getComputedStyle(navToggle).top);
+                
+                // 添加拖拽时的样式
+                navToggle.style.transition = 'none';
+                navToggle.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+            });
+            
+            // 鼠标移动事件
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                
+                // 计算新的位置
+                let newLeft = e.clientX - offsetX;
+                let newTop = e.clientY - offsetY;
+                
+                // 限制在可视区域内
+                newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - navToggle.offsetWidth));
+                newTop = Math.max(0, Math.min(newTop, window.innerHeight - navToggle.offsetHeight));
+                
+                // 更新位置
+                navToggle.style.left = newLeft + 'px';
+                navToggle.style.top = newTop + 'px';
+            });
+            
+            // 鼠标释放事件
+            document.addEventListener('mouseup', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    // 恢复正常样式
+                    navToggle.style.transition = 'all 0.3s';
+                    navToggle.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                }
+            });
+            
+            // 触摸设备支持
+            navToggle.addEventListener('touchstart', function(e) {
+                isDragging = true;
+                const touch = e.touches[0];
+                offsetX = touch.clientX - parseInt(window.getComputedStyle(navToggle).left);
+                offsetY = touch.clientY - parseInt(window.getComputedStyle(navToggle).top);
+                navToggle.style.transition = 'none';
+                navToggle.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.15)';
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchmove', function(e) {
+                if (!isDragging) return;
+                const touch = e.touches[0];
+                let newLeft = touch.clientX - offsetX;
+                let newTop = touch.clientY - offsetY;
+                newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - navToggle.offsetWidth));
+                newTop = Math.max(0, Math.min(newTop, window.innerHeight - navToggle.offsetHeight));
+                navToggle.style.left = newLeft + 'px';
+                navToggle.style.top = newTop + 'px';
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchend', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    navToggle.style.transition = 'all 0.3s';
+                    navToggle.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                }
+            });
+        }
         
         // 初始化侧边导航栏
         function initSidebarNav() {
