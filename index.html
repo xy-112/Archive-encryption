@@ -1572,10 +1572,10 @@
         
         @media (max-width: 768px) {
             /* 增加整体页面边距 */
-            body { padding: 15px; }
+            body { padding: 25px; }
             .container {
-                padding: 20px;
-                margin: 10px auto;
+                padding: 30px;
+                margin: 20px auto;
             }
             
             /* 调整标题和组件大小 */
@@ -1776,19 +1776,22 @@
         
         @media (max-width: 480px) {
             /* 小屏幕设备优化 */
-            /* 进一步减少边距 */
-            body { padding: 8px; }
-            .container { padding: 0 5px; }
+            /* 保持合适的边距 */
+            body { padding: 20px; }
+            .container { 
+                padding: 25px;
+                margin: 15px auto;
+            }
             
             /* 调整header和卡片 */
             header {
-                margin-bottom: 12px;
-                padding: 15px 12px;
+                margin-bottom: 15px;
+                padding: 18px;
             }
             
             .card, .knowledge-card {
-                margin-bottom: 12px;
-                padding: 15px;
+                margin-bottom: 15px;
+                padding: 20px;
             }
             
             /* 优化挑战区域 */
@@ -2089,7 +2092,7 @@
         
         <!-- 对称加密简介 -->
         <div id="introduction" class="tab-content">
-            <div class="knowledge-card">
+            <div class="knowledge-card" style="background: white;">
                 <h2><i class="fas fa-book"></i> 什么是对称加密？</h2>
                 <p>
                     <strong>对称加密</strong>是指<strong>加密和解密使用同一把密钥</strong>的加密方式。
@@ -2430,7 +2433,7 @@
         
         <!-- 非对称加密部分 -->
         <div id="asymmetric" class="tab-content">
-            <div class="knowledge-card">
+            <div class="knowledge-card" style="background: white;">
                 <h2><i class="fas fa-key"></i> 什么是非对称加密？</h2>
                 <p>
                     <strong>非对称加密</strong>（也称为<strong>公钥加密</strong>）是一种使用<strong>一对密钥</strong>进行加密和解密的技术。
@@ -2612,7 +2615,7 @@
         
         <!-- 哈希函数部分 -->
         <div id="hash" class="tab-content">
-            <div class="knowledge-card">
+            <div class="knowledge-card" style="background: white;">
                 <h2><i class="fas fa-calculator"></i> 什么是哈希函数？</h2>
                 <p>
                     <strong>哈希函数</strong>（Hash Function）是一种将任意长度的输入数据转换为固定长度输出的函数。这个输出值称为<strong>哈希值</strong>、<strong>散列值</strong>或<strong>摘要</strong>。
@@ -2885,12 +2888,12 @@
             <div class="card">
                 <h2 class="section-title"><i class="fas fa-book"></i> 使用指南</h2>
                 
-                <div class="knowledge-card">
+                <div class="knowledge-card" style="background: white;">
                     <h3><i class="fas fa-info-circle"></i> 网站概述</h3>
                     <p>档案加密技术体验馆是一个交互式学习平台，带领大家探索加密技术的古今智慧。网站包含古代加密术、对称加密、AES加密、非对称加密、哈希函数等多个模块，以及互动挑战环节。</p>
                 </div>
                 
-                <div class="knowledge-card">
+                <div class="knowledge-card" style="background: white;">
                     <h3><i class="fas fa-mouse-pointer"></i> 基本操作</h3>
                     
                     <h4>1. 导航菜单使用</h4>
@@ -2914,7 +2917,7 @@
                     </ul>
                 </div>
                 
-                <div class="knowledge-card">
+                <div class="knowledge-card" style="background: white;">
                     <h3><i class="fas fa-cubes"></i> 主要功能模块</h3>
                     
                     <h4>1. 古代加密术</h4>
@@ -2960,7 +2963,7 @@
                     </ul>
                 </div>
                 
-                <div class="knowledge-card">
+                <div class="knowledge-card" style="background: white;">
                     <h3><i class="fas fa-star"></i> 特色功能</h3>
                     
                     <h4>1. 可视化演示</h4>
@@ -2985,7 +2988,7 @@
                     </ul>
                 </div>
                 
-                <div class="knowledge-card">
+                <div class="knowledge-card" style="background: white;">
                     <h3><i class="fas fa-lightbulb"></i> 使用技巧</h3>
                     
                     <h4>1. 最佳浏览体验</h4>
